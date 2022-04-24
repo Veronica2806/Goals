@@ -1,0 +1,67 @@
+GET http://localhost:4000/goals
+
+###
+
+GET http://localhost:4000/goals/nextSteps
+
+###
+
+GET http://localhost:4000/goals/6263da0f4d9e4f9788752ab6
+
+###
+
+POST http://localhost:4000/goals/create
+Content-Type: application/json
+
+{
+    "name": "play piano",
+    "description": "I want to play piano like Mozart" 
+}
+
+###
+
+PATCH http://localhost:4000/goals/6263da0f4d9e4f9788752ab6/update
+Content-Type: application/json
+
+{
+    "name": "learn to cook",
+    "description": "I want to learn cooking",
+    "dueDate":  "Sat Apr 23 2022 14:26:06 GMT+0300"
+}
+###
+
+PATCH http://localhost:4000/goals/6263da0f4d9e4f9788752ab6/updateStatus
+Content-Type: application/json
+
+{
+  "completed": false
+}
+
+###
+
+POST http://localhost:4000/steps/6263e79bab7ac2712fb30d11/createStep
+Content-Type: application/json
+
+{
+    "name": "buy piano",
+    "description": "I want to buy a piano to be able to practice at home"
+}
+
+###
+
+PATCH http://localhost:4000/steps/6263e79bab7ac2712fb30d11/updateStep/6263eb4d450b52765fe39d32
+Content-Type: application/json
+
+{
+    "name": "Play violin"
+}
+###
+
+PATCH http://localhost:4000/steps/6263e79bab7ac2712fb30d11/updateStepStatus/6263eb4d450b52765fe39d32
+Content-Type: application/json
+
+{
+    "completed": true
+}
+###
+
