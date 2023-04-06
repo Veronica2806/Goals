@@ -1,14 +1,13 @@
-import './App.css';
 import {
   BrowserRouter
 } from 'react-router-dom';
-import AppRoutes from './AppRoutes.tsx';
-
+import AppRoutes from './routes/AppRoutes.tsx';
+import PageLayout from './components/pageLayout/PageLayout';
 
 function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <PageLayout content={AppRoutes} />
     </BrowserRouter>
   );
 }

@@ -1,8 +1,9 @@
 const express = require('express');
 const Goal = require('../models/goal');
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware')
 
-router.get('/', async (req, res) => {
+router.get('/', authMiddleware, async (req, res) => {
     try {
         const goals = await Goal.find();
         res.json(goals);
@@ -12,16 +13,18 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/nextSteps', async (req, res) => {
+router.get('/nextSteps', authMiddleware, async (req, res) => {
     try {
         const goals = await Goal.find();
         const firstSteps = [];
         //TODO: only uncompleted steps should be returned
-        goals.forEach(goal => {
-            if (goal.steps.length) {
-                firstSteps.push({ step: goal.steps[0], goalName: goal.name, goalId: goal._id })
+        for (let i = 0; i < goals.length; i++) {
+            const notCompletedTask = goals[i].steps.find((step) => !step.completed);
+            if (notCompletedTask) {
+                notCompletedTask.goalId = goals[i]._id;
+                firstSteps.push(notCompletedTask);
             }
-        })
+        }
         res.json(firstSteps);
     }
     catch (err) {
@@ -29,7 +32,7 @@ router.get('/nextSteps', async (req, res) => {
     }
 })
 
-router.post('/create', async (req, res) => {
+router.post('/create', authMiddleware, async (req, res) => {
     const goal = new Goal({ ...req.body });
     try {
         const newGoal = await goal.save();
@@ -40,7 +43,7 @@ router.post('/create', async (req, res) => {
     }
 })
 
-router.get('/:goalId', async (req, res) => {
+router.get('/:goalId', authMiddleware, async (req, res) => {
     try {
         const goal = await Goal.findById(req.params.goalId);
         res.json(goal);
@@ -50,7 +53,7 @@ router.get('/:goalId', async (req, res) => {
     }
 })
 
-router.put('/:goalId/update', async (req, res) => {
+router.put('/:goalId/update', authMiddleware, async (req, res) => {
     try {
         const updatedGoal = await Goal.findByIdAndUpdate(req.params.goalId, req.body, {
             new: true,
@@ -63,7 +66,7 @@ router.put('/:goalId/update', async (req, res) => {
     }
 })
 
-router.patch('/:goalId/updateStatus', async (req, res) => {
+router.patch('/:goalId/updateStatus', authMiddleware, async (req, res) => {
     try {
         const goal = await Goal.findById(req.params.goalId);
         goal.completed = req.body.completed;
@@ -75,7 +78,7 @@ router.patch('/:goalId/updateStatus', async (req, res) => {
     }
 });
 
-router.delete('/:goalId/delete', async (req, res) => {
+router.delete('/:goalId/delete', authMiddleware, async (req, res) => {
     try {
         const goal = await Goal.findById(req.params.goalId);
         if (goal) {

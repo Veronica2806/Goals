@@ -7,6 +7,7 @@ import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays';
 import type { Goal } from "./types";
+import query from 'tools/query';
 
 function CreateGoal() {
     const navigate = useNavigate()
@@ -16,50 +17,50 @@ function CreateGoal() {
 
     useEffect(() => {
         if (goalId) {
-            fetch(`http://localhost:4000/goals/${goalId}`)
-                .then((res) => res.json())
-                .then((data) => setInitialValues(data))
-                .catch(error => setError(error))
+            getGoalData(goalId);
         }
     }, [goalId]);
 
-    async function onSubmit(values: Goal) {
-        console.log(values)
-        const requestLink = goalId ? `http://localhost:4000/goals/${goalId}/update` : 'http://localhost:4000/goals/create';
-        const requestMethod = goalId ? 'PUT' : 'POST'
+    const getGoalData = async (goalId) => {
         try {
-            await fetch(
-                requestLink,
-                {
-                    method: requestMethod,
-                    body: JSON.stringify(values),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-            navigate(`/goalslist/${goalId}`)
+            const response = await query(`goals/${goalId}`, "GET");
+            const data = await response.json();
+            setInitialValues(data);
         }
-        catch (err) {
-            setError(error)
+        catch (error) {
+            setError(error.message)
         }
+    }
+
+    const onSubmit = async (values: Goal) => {
+        const requestLink = goalId ? `goals/${goalId}/update` : 'goals/create';
+        const requestMethod = goalId ? 'PUT' : 'POST';
+        try {
+            await query(requestLink, requestMethod, values);
+            navigate(`/goalslist`);
+        } catch (error) {
+            setError(error.message);
+        }
+    }
+
+    if (error) {
+        return <Typography>{error}</Typography>
     }
     if (goalId && !initialValues) {
         return (
-            <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
+            <Grid container item sx={{ justifyContent: 'center' }}>
                 <Typography>Loading ...</Typography>
             </Grid>
         )
     }
-    if (error) {
-        return <Typography>{error}</Typography>
-    }
+
     return (
         <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
             <Grid item>
-                <Typography variant='h3'>Create new Goal</Typography>
+                <Typography variant='h3'>Create/Update new Goal</Typography>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
-                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/')}>Go home</Button>
+                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/home')}>Go home</Button>
                 <Button variant='outlined' onClick={() => navigate('/goalslist')}>See full list of goals</Button>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>

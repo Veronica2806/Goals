@@ -4,6 +4,10 @@ const StepSchema = new mongoose.Schema({
     name: String, 
     description: String, 
     dueDate: Date, 
+    goalId: {
+        type: String,
+        required: false
+    },
     completed: {
         type: Boolean, 
         default: false 

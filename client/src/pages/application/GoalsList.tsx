@@ -8,55 +8,50 @@ import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import { useNavigate } from 'react-router-dom';
 import type { Event } from "./types";
+import query from "tools/query";
 
 function GoalsList() {
     const navigate = useNavigate();
     const [goals, setGoals] = useState([])
     const [error, setError] = useState();
+
     useEffect(() => {
-        fetch('http://localhost:4000/goals')
-            .then((res) => res.json())
-            .then((data) => setGoals(data))
-            .catch(error => setError(error))
+        getGoals();
     }, [])
+
+    async function getGoals() {
+        try {
+            const response = await query("goals", "get");
+            const data = await response.json();
+            setGoals(data);
+        }
+        catch (error) {
+            setError(error.message)
+        }
+    }
+
     async function onCompleteGoalChange(id: string, event: Event) {
         const newValue = event.target.value === 'true';
         try {
-            await fetch(`http://localhost:4000/goals/${id}/updateStatus`,
-                {
-                    method: 'PATCH',
-                    body: JSON.stringify({ completed: !newValue }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-            fetch(`http://localhost:4000/goals`)
-                .then((res) => res.json())
-                .then((data) => setGoals(data))
-                .catch(error => setError(error))
+            await query(`goals/${id}/updateStatus`, "patch", { completed: !newValue });
+            getGoals()
         }
-        catch (err) {
-            setError(error)
+        catch (error) {
+            setError(error.message)
         }
     }
     async function onDelete(id: string) {
         try {
-            await fetch(`http://localhost:4000/goals/${id}/delete`,
-                {
-                    method: 'DELETE'
-                })
-            fetch(`http://localhost:4000/goals`)
-                .then((res) => res.json())
-                .then((data) => setGoals(data))
-                .catch(error => setError(error))
-        } catch (err) {
-            setError(error)
+            await query(`goals/${id}/delete`, "delete");
+            getGoals()
+        } catch (error) {
+            setError(error.message)
         }
     }
 
     if (!goals.length) {
         return (
-            <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
+            <Grid container sx={{ justifyContent: 'center' }}>
                 <Typography>Loading ...</Typography>
             </Grid>
         )
@@ -70,7 +65,7 @@ function GoalsList() {
                 <Typography variant='h3'>Your goals</Typography>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
-                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/')}>go home</Button>
+                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/home')}>go home</Button>
                 <Button variant='outlined' onClick={() => navigate('/goal')}>Create new Goal</Button>
             </Grid>
 

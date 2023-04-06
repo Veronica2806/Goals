@@ -63,5 +63,18 @@ Content-Type: application/json
 {
     "completed": true
 }
+
 ###
 
+
+POST http://localhost:4000/auth/registration
+Content-Type: application/json
+
+{
+    "firstName": "Veronica",
+    "lastName": "Soloduha",
+    "email": "soloduha10@gmail.com",
+    "password": "Qwerty1!"
+}
+
+###

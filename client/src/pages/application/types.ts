@@ -5,14 +5,14 @@ export type Event = SyntheticEvent<HTMLInputElement> & {
 };
 
 export type Goal = {
+    _id: string,
     name: string,
     description: string,
     completed: boolean,
-    _id: string,
     steps: {
+        _id: string,
         name: string,
         description: string,
         completed: boolean,
-        _id: string
     }[]
 }

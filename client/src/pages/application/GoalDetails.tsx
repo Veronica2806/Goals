@@ -8,67 +8,54 @@ import CardContent from '@mui/material/CardContent';
 import Checkbox from '@mui/material/Checkbox';
 import { useNavigate, useParams } from 'react-router-dom';
 import type { Event, Goal } from "./types";
+import query from 'tools/query';
 
 function GoalDetails() {
     const navigate = useNavigate();
     const { goalId } = useParams();
     const [goal, setGoal] = useState<Goal>();
     const [error, setError] = useState();
+
+    async function getGoal(id) {
+        try {
+            const response = await query(`goals/${id}`, 'GET');
+            const data = await response.json();
+            setGoal(data);
+        } catch (error) {
+            setError(error.message)
+        }
+    }
     useEffect(() => {
-        fetch(`http://localhost:4000/goals/${goalId}`)
-            .then((res) => res.json())
-            .then((data) => setGoal(data))
-            .catch(error => setError(error))
+        getGoal(goalId);
     }, [goalId])
 
     async function onCompleteStepChange(id: string, event: Event) {
         const newValue = event.target.value === 'true';
         try {
-            await fetch(`http://localhost:4000/steps/${goalId}/updateStepStatus/${id}`,
-                {
-                    method: 'PATCH',
-                    body: JSON.stringify({ completed: !newValue }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-            fetch(`http://localhost:4000/goals/${goalId}`)
-                .then((res) => res.json())
-                .then((data) => setGoal(data))
-                .catch(error => setError(error))
+            const response = await query(`steps/${goalId}/updateStepStatus/${id}`, 'PATCH', { completed: !newValue });
+            const data = await response.json();
+            getGoal(data._id);
         }
-        catch (err) {
-            setError(error)
+        catch (error) {
+            setError(error.message)
         }
     }
 
     async function onCompleteGoalChange(id: string, event: Event) {
         const newValue = event.target.value === 'true';
         try {
-            await fetch(`http://localhost:4000/goals/${id}/updateStatus`,
-                {
-                    method: 'PATCH',
-                    body: JSON.stringify({ completed: !newValue }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-            fetch(`http://localhost:4000/goals/${goalId}`)
-                .then((res) => res.json())
-                .then((data) => setGoal(data))
-                .catch(error => setError(error))
+            const response = await query(`goals/${id}/updateStatus`, 'PATCH', { completed: !newValue });
+            const data = await response.json();
+            getGoal(data._id);
         }
-        catch (err) {
-            setError(error)
+        catch (error) {
+            setError(error.message)
         }
     }
 
     async function onDelete(id: string) {
         try {
-            await fetch(`http://localhost:4000/goals/${id}/delete`,
-                {
-                    method: 'DELETE'
-                })
+            await query(`goals/${id}/delete`, 'DELETE');
             navigate('/goalslist')
         } catch (err) {
             setError(error)
@@ -76,7 +63,7 @@ function GoalDetails() {
     }
     if (!goal) {
         return (
-            <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
+            <Grid container sx={{ justifyContent: 'center' }}>
                 <Typography>Loading ...</Typography>
             </Grid>
         )
@@ -91,7 +78,7 @@ function GoalDetails() {
                 <Typography variant='h3'>Your goals</Typography>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
-                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/')}>go home</Button>
+                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/home')}>go home</Button>
                 <Button variant='outlined' onClick={() => navigate('/goalslist')}>See full list of goals</Button>
             </Grid>
             <Grid container item direction={'row'} justifyContent='center'>
