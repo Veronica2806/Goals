@@ -9,6 +9,8 @@ export type Goal = {
     name: string,
     description: string,
     completed: boolean,
+    createdDate: string,
+    lastEdited: string,
     steps: {
         _id: string,
         name: string,

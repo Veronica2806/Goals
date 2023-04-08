@@ -12,6 +12,7 @@ router.patch('/:goalId/updateStepStatus/:stepId', authMiddleware, async (req, re
     }
     step.completed = req.body.completed;
     try {
+        goal.lastEdited = req.body.lastEdited;
         const updatedGoal = await goal.save();
         res.json(updatedGoal);
     }

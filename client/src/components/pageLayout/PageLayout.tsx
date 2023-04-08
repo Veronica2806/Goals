@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-import { ButtonGroup, Button, Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import createClasses from './styles';
@@ -28,16 +27,16 @@ function PageLayout(props) { //types
                 justifyContent="flex-start"
             >
 
-                <Grid item xs={2} sx={{ border: '1px solid black' }}>
-                    some content
-        
+                <Grid item xs={2} sx={{ border: '1px solid black' }} padding={2} className={classes.scrollableContainer}>
+                    feature list of the folders
+
                 </Grid>
 
-                <Grid item xs={8} sx={{ border: '1px solid black'}}>
+                <Grid item xs={8} sx={{ border: '1px solid black' }} padding={2} className={classes.scrollableContainer}>
                     <InnerContent />
                 </Grid>
 
-                <Grid item xs={2} sx={{ border: '1px solid black' }}>
+                <Grid item xs={2} sx={{ border: '1px solid black' }} padding={2} className={classes.scrollableContainer}>
                     some content
                 </Grid>
             </Grid>

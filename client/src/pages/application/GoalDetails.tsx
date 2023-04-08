@@ -1,24 +1,21 @@
 import { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Checkbox from '@mui/material/Checkbox';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Checkbox, CardContent, CardActions, Card, Typography, Grid, Button } from '@mui/material';
 import type { Event, Goal } from "./types";
 import query from 'tools/query';
+import convertDate from 'tools/convertDate';
 
 function GoalDetails() {
     const navigate = useNavigate();
-    const { goalId } = useParams();
+    const { goalId } = useParams<string>();
     const [goal, setGoal] = useState<Goal>();
     const [error, setError] = useState();
+    const localeCreatedDate = convertDate(goal?.createdDate);
+    const localelastEditedDate = convertDate(goal?.lastEdited);
 
-    async function getGoal(id) {
+    async function getGoal(goalId: string) {
         try {
-            const response = await query(`goals/${id}`, 'GET');
+            const response = await query(`goals/details/${goalId}`, 'GET');
             const data = await response.json();
             setGoal(data);
         } catch (error) {
@@ -32,7 +29,7 @@ function GoalDetails() {
     async function onCompleteStepChange(id: string, event: Event) {
         const newValue = event.target.value === 'true';
         try {
-            const response = await query(`steps/${goalId}/updateStepStatus/${id}`, 'PATCH', { completed: !newValue });
+            const response = await query(`steps/${goalId}/updateStepStatus/${id}`, 'PATCH', { completed: !newValue, lastEdited: Date.now() });
             const data = await response.json();
             getGoal(data._id);
         }
@@ -44,7 +41,7 @@ function GoalDetails() {
     async function onCompleteGoalChange(id: string, event: Event) {
         const newValue = event.target.value === 'true';
         try {
-            const response = await query(`goals/${id}/updateStatus`, 'PATCH', { completed: !newValue });
+            const response = await query(`goals/${id}/updateStatus`, 'PATCH', { completed: !newValue, lastEdited: Date.now() });
             const data = await response.json();
             getGoal(data._id);
         }
@@ -75,7 +72,7 @@ function GoalDetails() {
     else return (
         <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
             <Grid item>
-                <Typography variant='h3'>Your goals</Typography>
+                <Typography variant='h3'>{goal.name}</Typography>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
                 <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/home')}>go home</Button>
@@ -98,7 +95,7 @@ function GoalDetails() {
                             Steps:
                         </Typography>
 
-                        {goal.steps.map(step => (
+                        {goal.steps?.map(step => (
                             <Grid item container key={step._id} alignItems='center'>
                                 <Typography variant='body1'>{step.name}</Typography>:
                                 <Typography variant='body1'>{step.description}</Typography>
@@ -110,10 +107,17 @@ function GoalDetails() {
                         ))}
 
                     </CardContent>
-                    <CardActions>
-                        <Button size='small' onClick={() => navigate(`/goal/${goal._id}`)}>Update</Button>
-                        <Button size='small' onClick={() => onDelete(goal._id)}>Delete</Button>
-                    </CardActions>
+                    <Grid item container alignItems='center' justifyContent='space-between'>
+                        <CardActions>
+                            <Button size='small' onClick={() => navigate(`/goal/${goal._id}`)}>Update</Button>
+                            <Button size='small' onClick={() => onDelete(goal._id)}>Delete</Button>
+
+                        </CardActions>
+                        <Grid sx={{ color: "gray" }} pr={1}>
+                            <Typography variant='body2'>{`Last Edited: ${localelastEditedDate}`}</Typography>
+                            <Typography variant='body2'>{`Created: ${localeCreatedDate}`}</Typography>
+                        </Grid>
+                    </Grid>
                 </Card>
             </Grid>
         </Grid>

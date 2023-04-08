@@ -2,12 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import MuiAlert from '@mui/material/Alert';
-
+import { Typography, Grid, Button, Alert} from '@mui/material';
 import createClasses from "./styles";
 import query from 'tools/query';
 
@@ -25,8 +20,10 @@ function Login() {
         try {
             const response = await query(requestLink, requestMethod, values);
             if (response.ok) {
-                const { token } = await response.json();
+                const { token, user } = await response.json();
                 localStorage.setItem('AccessToken', token);
+                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('userId', user._id);
                 navigate('/home')
             }
             else {
@@ -41,11 +38,11 @@ function Login() {
 
     return (
         <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
-            {error && <MuiAlert
+            {error && <Alert
                 onClose={() => setError(undefined)}
                 classes={{ root: classes.root }}
                 variant="filled"
-                severity="error">{error}</MuiAlert>}
+                severity="error">{error}</Alert>}
             <Grid item>
                 <Typography variant='h3'>Hello</Typography>
             </Grid>

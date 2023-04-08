@@ -1,29 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays';
+import { Typography, Grid, Button } from '@mui/material';
 import type { Goal } from "./types";
 import query from 'tools/query';
 
 function CreateGoal() {
     const navigate = useNavigate()
     const [error, setError] = useState();
-    const [initialValues, setInitialValues] = useState();
+    const [initialValues, setInitialValues] = useState<Goal>();
     const { goalId } = useParams();
+    const userId = localStorage.getItem('userId');
+    const isEdit = goalId;
 
     useEffect(() => {
-        if (goalId) {
+        if (isEdit) {
             getGoalData(goalId);
         }
-    }, [goalId]);
+    }, [isEdit]);
 
     const getGoalData = async (goalId) => {
         try {
-            const response = await query(`goals/${goalId}`, "GET");
+            const response = await query(`goals/details/${goalId}`, "GET");
             const data = await response.json();
             setInitialValues(data);
         }
@@ -33,10 +33,16 @@ function CreateGoal() {
     }
 
     const onSubmit = async (values: Goal) => {
-        const requestLink = goalId ? `goals/${goalId}/update` : 'goals/create';
-        const requestMethod = goalId ? 'PUT' : 'POST';
+        const requestLink = isEdit ? `goals/${goalId}/update` : 'goals/create';
+        const requestMethod = isEdit ? 'PUT' : 'POST';
+        const body = {
+            ...values,
+            userId,
+            lastEdited: Date.now(),
+            createdDate: isEdit ? initialValues.createdDate: Date.now()
+        }
         try {
-            await query(requestLink, requestMethod, values);
+            await query(requestLink, requestMethod, body);
             navigate(`/goalslist`);
         } catch (error) {
             setError(error.message);
@@ -46,7 +52,7 @@ function CreateGoal() {
     if (error) {
         return <Typography>{error}</Typography>
     }
-    if (goalId && !initialValues) {
+    if (isEdit && !initialValues) {
         return (
             <Grid container item sx={{ justifyContent: 'center' }}>
                 <Typography>Loading ...</Typography>
@@ -57,7 +63,7 @@ function CreateGoal() {
     return (
         <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
             <Grid item>
-                <Typography variant='h3'>Create/Update new Goal</Typography>
+                <Typography variant='h3'>{isEdit ? 'Update your Goal' : "Create your Goal"}</Typography>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
                 <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/home')}>Go home</Button>

@@ -3,9 +3,9 @@ const Goal = require('../models/goal');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware')
 
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/:userId', authMiddleware, async (req, res) => {
     try {
-        const goals = await Goal.find();
+        const goals = await Goal.find({userId: req.params.userId});
         res.json(goals);
     }
     catch (err) {
@@ -13,9 +13,9 @@ router.get('/', authMiddleware, async (req, res) => {
     }
 })
 
-router.get('/nextSteps', authMiddleware, async (req, res) => {
+router.get('/nextSteps/:userId', authMiddleware, async (req, res) => {
     try {
-        const goals = await Goal.find();
+        const goals = await Goal.find({userId: req.params.userId});
         const firstSteps = [];
         //TODO: only uncompleted steps should be returned
         for (let i = 0; i < goals.length; i++) {
@@ -43,7 +43,7 @@ router.post('/create', authMiddleware, async (req, res) => {
     }
 })
 
-router.get('/:goalId', authMiddleware, async (req, res) => {
+router.get('/details/:goalId', authMiddleware, async (req, res) => {
     try {
         const goal = await Goal.findById(req.params.goalId);
         res.json(goal);
@@ -70,6 +70,7 @@ router.patch('/:goalId/updateStatus', authMiddleware, async (req, res) => {
     try {
         const goal = await Goal.findById(req.params.goalId);
         goal.completed = req.body.completed;
+        goal.lastEdited = req.body.lastEdited;
         const updatedGoal = await goal.save();
         res.json(updatedGoal);
     }

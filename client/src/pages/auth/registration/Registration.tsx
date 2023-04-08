@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays';
+import { Typography, Grid, Button} from '@mui/material';
 import query from 'tools/query';
 
 function Registration() {

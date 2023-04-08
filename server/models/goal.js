@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
 
 const StepSchema = new mongoose.Schema({
-    name: String, 
-    description: String, 
-    dueDate: Date, 
+    name: String,
+    description: String,
+    dueDate: Date,
     goalId: {
         type: String,
         required: false
     },
     completed: {
-        type: Boolean, 
-        default: false 
-    }});
+        type: Boolean,
+        default: false
+    }
+});
 
 const goalSchema = new mongoose.Schema({
     name: {
@@ -20,7 +21,7 @@ const goalSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        required: false
     },
     completed: {
         type: Boolean,
@@ -34,6 +35,18 @@ const goalSchema = new mongoose.Schema({
     dueDate: {
         type: Date,
         required: false
+    },
+    lastEdited: {
+        type: Date,
+        required: false
+    },
+    createdDate: {
+        type: Date,
+        required: false
+    },
+    userId: {
+        type: String,
+        required: true
     }
 })
 

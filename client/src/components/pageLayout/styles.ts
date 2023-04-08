@@ -5,7 +5,11 @@ const createClasses = makeStyles(() => ({
         height: '87vh',
     },
     innerContainer: {
-        height: '86%'
+        height: '86%',
+    },
+    scrollableContainer: {
+        height: '100%',
+        overflow: 'scroll'
     }
 }));
 

@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Checkbox from '@mui/material/Checkbox';
+import type { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Typography, Grid, Button } from '@mui/material';
 import type { Event } from "./types";
 import query from "tools/query";
+import GoalCard from 'components/goalCard/GoalCard';
 
 function GoalsList() {
     const navigate = useNavigate();
     const [goals, setGoals] = useState([])
     const [error, setError] = useState();
+    const [loading, setLoading] = useState(true);
+    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
         getGoals();
@@ -21,26 +19,28 @@ function GoalsList() {
 
     async function getGoals() {
         try {
-            const response = await query("goals", "get");
+            const response = await query(`goals/${userId}`, "get");
             const data = await response.json();
             setGoals(data);
+            setLoading(false)
         }
         catch (error) {
             setError(error.message)
         }
     }
 
-    async function onCompleteGoalChange(id: string, event: Event) {
+    async function onCompleteGoalChange(event: Event, id: string) {
         const newValue = event.target.value === 'true';
         try {
-            await query(`goals/${id}/updateStatus`, "patch", { completed: !newValue });
+            await query(`goals/${id}/updateStatus`, "patch", { completed: !newValue, lastEdited: Date.now() });
             getGoals()
         }
         catch (error) {
             setError(error.message)
         }
     }
-    async function onDelete(id: string) {
+    async function onDeleteClick(event: MouseEvent<HTMLElement>, id: string) {
+        event.stopPropagation();
         try {
             await query(`goals/${id}/delete`, "delete");
             getGoals()
@@ -49,7 +49,17 @@ function GoalsList() {
         }
     }
 
-    if (!goals.length) {
+    function onCardClick(event: MouseEvent<HTMLElement>, goalId) {
+        event.stopPropagation();
+        navigate(`/goalslist/${goalId}`)
+    }
+
+    function onUpdateClick(event: MouseEvent<HTMLElement>, goalId) {
+        event.stopPropagation();
+        navigate(`/goal/${goalId}`);
+    }
+
+    if (loading) {
         return (
             <Grid container sx={{ justifyContent: 'center' }}>
                 <Typography>Loading ...</Typography>
@@ -70,28 +80,17 @@ function GoalsList() {
             </Grid>
 
             <Grid container item direction={'row'} sx={{ justifyContent: 'center' }}>
-                {goals.map((goal) => (
-                    <Card key={goal._id} sx={{ width: 250, background: '#FDFDA4', margin: '16px' }} raised>
-                        <CardContent>
-                            <Typography variant='h5' component='div'>
-                                {goal.name}
-                                <Checkbox
-                                    checked={goal.completed}
-                                    value={goal.completed}
-                                    onChange={(event) => onCompleteGoalChange(goal._id, event)} />
-
-                            </Typography>
-                            <Typography variant='body2'>
-                                {goal.description}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size='small' onClick={() => navigate(`/goalslist/${goal._id}`)}>See more</Button>
-                            <Button size='small' onClick={() => navigate(`/goal/${goal._id}`)}>Update</Button>
-                            <Button size='small' onClick={() => onDelete(goal._id)}>Delete</Button>
-                        </CardActions>
-                    </Card>
-                ))}
+                {goals.length ? goals.map((goal) => (
+                    <GoalCard
+                        key={goal._id}
+                        goal={goal}
+                        onCardClick={onCardClick}
+                        onCompleteGoalChange={onCompleteGoalChange}
+                        onUpdateClick={onUpdateClick}
+                        onDeleteClick={onDeleteClick} />
+                )) :
+                    <Typography>You don't have goals in your life. This is sad</Typography>
+                }
             </Grid>
         </Grid>
     )
