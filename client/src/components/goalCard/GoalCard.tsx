@@ -4,7 +4,10 @@ function GoalCard(props) {
     const { goal, onCardClick, onCompleteGoalChange, onUpdateClick, onDeleteClick } = props
 
     return (
-        <Card key={goal._id} sx={{ width: 250, background: goal.goalColor, margin: '16px', cursor: 'pointer' }} raised onClick={event => onCardClick(event, goal._id)}>
+        <Card
+            sx={{ width: 250, background: goal.goalColor, margin: '16px', cursor: 'pointer' }}
+            variant="outlined"
+            onClick={event => onCardClick(event, goal._id)}>
             <CardContent>
                 <Typography variant='h5' component='div'>
                     {goal.name}

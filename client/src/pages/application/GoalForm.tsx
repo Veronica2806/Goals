@@ -67,8 +67,7 @@ function CreateGoal() {
                 <Typography variant='h3'>{isEdit ? 'Update your Goal' : 'Create your Goal'}</Typography>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
-                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/home')}>Go home</Button>
-                <Button variant='outlined' onClick={() => navigate('/goalslist')}>See full list of goals</Button>
+                <Button variant='outlined' onClick={() => navigate('/goalslist')}>Go home</Button>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
                 <Form

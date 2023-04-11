@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Typography, Grid, Button, Alert} from '@mui/material';
-import type { Event } from "./types";
+import { useLocation } from 'react-router-dom';
+import { Typography, Grid, Alert } from '@mui/material';
+import type { Event } from "../../pages/application/types";
 import query from "tools/query";
 import StepCard from 'components/stepCard/StepCard';
 
-function Home() {
-    const navigate = useNavigate();
+function NextSteps() {
+    let location = useLocation();
     const [steps, setSteps] = useState([])
     const [error, setError] = useState();
     const [loading, setLoading] = useState(true);
     const userId = localStorage.getItem('userId');
+    const isAuthenticated = localStorage.getItem('AccessToken')
 
     useEffect(() => {
-        getNextSteps()
-    }, []);
+        if (isAuthenticated) {
+            getNextSteps()
+        }
+    }, [location, isAuthenticated]);
 
     async function getNextSteps() {
         try {
@@ -28,16 +31,24 @@ function Home() {
         }
     }
 
-    async function onCompleteStepChange(id: string, goalId: string, event: Event) {
+    async function onCompleteStepChange( event: Event, id: string, goalId: string) {
         const newValue = event.target.value === 'true';
         try {
-            await query(`steps/${goalId}/updateStepStatus/${id}`, 'patch', { completed: !newValue,  lastEdited: Date.now() })
+            await query(`steps/${goalId}/updateStepStatus/${id}`, 'patch', { completed: !newValue, lastEdited: Date.now() })
             getNextSteps();
         }
         catch (error) {
             setError(error.message);
         }
     }
+    if(!isAuthenticated){
+        return (
+            <Grid container item justifyContent='center' >
+                <Typography variant='body1'>Please login to see your next steps</Typography>
+            </Grid>
+        )
+    }
+
     if (loading) {
         return (
             <Grid container item justifyContent='center' >
@@ -52,13 +63,9 @@ function Home() {
     }
     return (
         <Grid container item sx={{ justifyContent: 'center' }} spacing={6}>
-            <Grid container item sx={{ justifyContent: 'center' }}>
-                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/goalslist')}>See full list of goals</Button>
-                <Button variant='outlined' onClick={() => navigate('/goal')}>Create new Goal</Button>
-            </Grid>
             {steps.length ?
                 <>
-                    <Grid item><Typography variant='h4'>Next steps to achieve your goals</Typography> </Grid>
+                    <Grid item><Typography variant='h6'>Next steps to achieve your goals</Typography> </Grid>
                     <Grid container item direction={'row'} sx={{ justifyContent: 'center' }}>
                         {steps.map((step) => <StepCard
                             key={step._id}
@@ -76,4 +83,4 @@ function Home() {
     )
 }
 
-export default Home;
+export default NextSteps;

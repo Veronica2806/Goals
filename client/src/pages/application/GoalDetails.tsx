@@ -75,12 +75,12 @@ function GoalDetails() {
                 <Typography variant='h3'>{goal.name}</Typography>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
-                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/home')}>go home</Button>
-                <Button variant='outlined' onClick={() => navigate('/goalslist')}>See full list of goals</Button>
+                <Button variant='outlined' onClick={() => navigate('/goalslist')}>go home</Button>
             </Grid>
             <Grid container item direction={'row'} justifyContent='center'>
                 <Card sx={{ width: 700, background: goal.goalColor, margin: '16px' }} raised>
                     <CardContent>
+                        <Grid container item justifyContent='space-between'>
                         <Typography variant='h4' component='div'>
                             {goal.name}
                             <Checkbox
@@ -88,6 +88,11 @@ function GoalDetails() {
                                 value={goal.completed}
                                 onChange={(event) => onCompleteGoalChange(goal._id, event)} />
                         </Typography>
+                        <CardActions>
+                            <Button size='small' onClick={() => navigate(`/goal/${goal._id}`)}>Update</Button>
+                            <Button size='small' onClick={() => onDelete(goal._id)}>Delete</Button>
+                        </CardActions>
+                        </Grid>
                         <Typography variant='h6'>
                             {goal.description}
                         </Typography>
@@ -107,12 +112,8 @@ function GoalDetails() {
                         ))}
 
                     </CardContent>
-                    <Grid item container alignItems='center' justifyContent='space-between'>
-                        <CardActions>
-                            <Button size='small' onClick={() => navigate(`/goal/${goal._id}`)}>Update</Button>
-                            <Button size='small' onClick={() => onDelete(goal._id)}>Delete</Button>
-
-                        </CardActions>
+                    <Grid item container alignItems='center' justifyContent='flex-end'>
+                       
                         <Grid sx={{ color: 'gray' }} pr={1}>
                             <Typography variant='body2'>{`Last Edited: ${localelastEditedDate}`}</Typography>
                             <Typography variant='body2'>{`Created: ${localeCreatedDate}`}</Typography>

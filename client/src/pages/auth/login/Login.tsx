@@ -24,7 +24,7 @@ function Login() {
                 localStorage.setItem('AccessToken', token);
                 localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem('userId', user._id);
-                navigate('/home')
+                navigate('/goalslist')
             }
             else {
                 const { message } = await response.json()

@@ -2,14 +2,16 @@ import makeStyles from "@mui/styles/makeStyles";
 
 const createClasses = makeStyles(() => ({
     container: {
-        height: '87vh',
+        height: '95vh',
     },
     innerContainer: {
         height: '86%',
     },
     scrollableContainer: {
         height: '100%',
-        overflow: 'scroll'
+        overflow: 'scroll',
+        border: '1px solid #a3a09e',
+
     }
 }));
 

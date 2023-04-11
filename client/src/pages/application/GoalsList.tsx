@@ -74,8 +74,7 @@ function GoalsList() {
             <Grid item>
                 <Typography variant='h3'>Your goals</Typography>
             </Grid>
-            <Grid container item sx={{ justifyContent: 'center' }}>
-                <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/home')}>go home</Button>
+            <Grid container item sx={{ justifyContent: 'flex-end' }}>
                 <Button variant='outlined' onClick={() => navigate('/goal')}>Create new Goal</Button>
             </Grid>
 
