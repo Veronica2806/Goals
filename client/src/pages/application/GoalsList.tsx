@@ -71,14 +71,11 @@ function GoalsList() {
     }
     else return (
         <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
-            <Grid item>
-                <Typography variant='h3'>Your goals</Typography>
-            </Grid>
             <Grid container item sx={{ justifyContent: 'flex-end' }}>
-                <Button variant='outlined' onClick={() => navigate('/goal')}>Create new Goal</Button>
+                <Button variant="contained" color='primary' onClick={() => navigate('/goal')}>Create new Goal</Button>
             </Grid>
 
-            <Grid container item direction={'row'} sx={{ justifyContent: 'center' }}>
+            <Grid container item direction={'row'} sx={{ justifyContent: 'left' }}>
                 {goals.length ? goals.map((goal) => (
                     <GoalCard
                         key={goal._id}

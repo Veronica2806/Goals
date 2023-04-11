@@ -19,16 +19,16 @@ function Header() {
 
     return (
         <Grid container item className={classes.container} direction="row" wrap="nowrap" columns={12}>
-            <Grid item container xs={10} >
+            <Grid item container xs={9} >
                 <Typography variant='h4'>Your goals</Typography>
             </Grid>
 
 
             {isAuthenticated &&
-                <Grid item container direction="row" justifyContent="flex-end" alignItems="center" xs={2} >
+                <Grid item container direction="row" justifyContent="flex-end" alignItems="center" xs={3} >
                     <Typography mr={2}>{userObj.firstName} {userObj.lastName}</Typography>
                     <ButtonGroup>
-                        <Button onClick={logout}>Logout</Button>
+                        <Button variant="contained" color='primary' onClick={logout}>Logout</Button>
                     </ButtonGroup>
                 </Grid>
             }

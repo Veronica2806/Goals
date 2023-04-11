@@ -27,7 +27,7 @@ function PageLayout(props) { //types
                 justifyContent="flex-start"
             >
 
-                <Grid item xs={2} padding={2} pt={10} className={classes.scrollableContainer}>
+                <Grid item xs={2} padding={2} pt={10} className={classes.scrollableContainer} sx={{borderRight: '1px solid white'}}>
                     feature list of the folders
 
                 </Grid>
@@ -35,7 +35,7 @@ function PageLayout(props) { //types
                 <Grid item xs={8} padding={2} className={classes.scrollableContainer}>
                     <InnerContent />
                 </Grid>
-                <Grid item xs={2} padding={2} pt={10} className={classes.scrollableContainer}>
+                <Grid item xs={2} padding={2} pt={10} className={classes.scrollableContainer} sx={{borderLeft: '1px solid white'}}>
                     <NextSteps />
                 </Grid>
             </Grid>

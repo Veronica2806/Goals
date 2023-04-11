@@ -71,14 +71,11 @@ function GoalDetails() {
 
     else return (
         <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
-            <Grid item>
-                <Typography variant='h3'>{goal.name}</Typography>
-            </Grid>
-            <Grid container item sx={{ justifyContent: 'center' }}>
-                <Button variant='outlined' onClick={() => navigate('/goalslist')}>go home</Button>
+            <Grid container item sx={{ justifyContent: 'right' }}>
+                <Button variant="contained" color='primary' onClick={() => navigate('/goalslist')}>go home</Button>
             </Grid>
             <Grid container item direction={'row'} justifyContent='center'>
-                <Card sx={{ width: 700, background: goal.goalColor, margin: '16px' }} raised>
+                <Card sx={{ width: 700, minHeight: 500 , background: goal.goalColor, margin: '16px', display: 'flex', flexDirection: 'column' }}  variant="outlined">
                     <CardContent>
                         <Grid container item justifyContent='space-between'>
                         <Typography variant='h4' component='div'>
@@ -112,8 +109,7 @@ function GoalDetails() {
                         ))}
 
                     </CardContent>
-                    <Grid item container alignItems='center' justifyContent='flex-end'>
-                       
+                    <Grid item container alignItems='center' justifyContent='flex-end' alignSelf='end'>
                         <Grid sx={{ color: 'gray' }} pr={1}>
                             <Typography variant='body2'>{`Last Edited: ${localelastEditedDate}`}</Typography>
                             <Typography variant='body2'>{`Created: ${localeCreatedDate}`}</Typography>

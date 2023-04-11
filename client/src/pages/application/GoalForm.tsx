@@ -63,11 +63,8 @@ function CreateGoal() {
 
     return (
         <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
-            <Grid item>
-                <Typography variant='h3'>{isEdit ? 'Update your Goal' : 'Create your Goal'}</Typography>
-            </Grid>
-            <Grid container item sx={{ justifyContent: 'center' }}>
-                <Button variant='outlined' onClick={() => navigate('/goalslist')}>Go home</Button>
+            <Grid container item sx={{ justifyContent: 'right' }}>
+                <Button variant="contained" color='primary' onClick={() => navigate('/goalslist')}>Go home</Button>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
                 <Form

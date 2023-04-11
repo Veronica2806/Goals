@@ -10,8 +10,6 @@ const createClasses = makeStyles(() => ({
     scrollableContainer: {
         height: '100%',
         overflow: 'scroll',
-        border: '1px solid #a3a09e',
-
     }
 }));
 
