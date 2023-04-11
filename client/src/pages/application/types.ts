@@ -1,4 +1,4 @@
-import type { SyntheticEvent } from "react";
+import type { SyntheticEvent } from 'react';
 
 export type Event = SyntheticEvent<HTMLInputElement> & {
     target: HTMLInputElement;
@@ -11,6 +11,7 @@ export type Goal = {
     completed: boolean,
     createdDate: string,
     lastEdited: string,
+    goalColor: string,
     steps: {
         _id: string,
         name: string,

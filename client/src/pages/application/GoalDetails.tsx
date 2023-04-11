@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Checkbox, CardContent, CardActions, Card, Typography, Grid, Button } from '@mui/material';
-import type { Event, Goal } from "./types";
+import type { Event, Goal } from './types';
 import query from 'tools/query';
 import convertDate from 'tools/convertDate';
 
@@ -79,7 +79,7 @@ function GoalDetails() {
                 <Button variant='outlined' onClick={() => navigate('/goalslist')}>See full list of goals</Button>
             </Grid>
             <Grid container item direction={'row'} justifyContent='center'>
-                <Card sx={{ width: 700, background: '#FDFDA4', margin: '16px' }} raised>
+                <Card sx={{ width: 700, background: goal.goalColor, margin: '16px' }} raised>
                     <CardContent>
                         <Typography variant='h4' component='div'>
                             {goal.name}
@@ -113,7 +113,7 @@ function GoalDetails() {
                             <Button size='small' onClick={() => onDelete(goal._id)}>Delete</Button>
 
                         </CardActions>
-                        <Grid sx={{ color: "gray" }} pr={1}>
+                        <Grid sx={{ color: 'gray' }} pr={1}>
                             <Typography variant='body2'>{`Last Edited: ${localelastEditedDate}`}</Typography>
                             <Typography variant='body2'>{`Created: ${localeCreatedDate}`}</Typography>
                         </Grid>

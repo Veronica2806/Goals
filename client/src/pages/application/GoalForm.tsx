@@ -4,8 +4,9 @@ import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays';
 import { Typography, Grid, Button } from '@mui/material';
-import type { Goal } from "./types";
+import type { Goal } from './types';
 import query from 'tools/query';
+import ColorSelect from 'components/colorSelect/ColorSelect';
 
 function CreateGoal() {
     const navigate = useNavigate()
@@ -23,7 +24,7 @@ function CreateGoal() {
 
     const getGoalData = async (goalId) => {
         try {
-            const response = await query(`goals/details/${goalId}`, "GET");
+            const response = await query(`goals/details/${goalId}`, 'GET');
             const data = await response.json();
             setInitialValues(data);
         }
@@ -39,7 +40,7 @@ function CreateGoal() {
             ...values,
             userId,
             lastEdited: Date.now(),
-            createdDate: isEdit ? initialValues.createdDate: Date.now()
+            createdDate: isEdit ? initialValues.createdDate : Date.now()
         }
         try {
             await query(requestLink, requestMethod, body);
@@ -63,7 +64,7 @@ function CreateGoal() {
     return (
         <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
             <Grid item>
-                <Typography variant='h3'>{isEdit ? 'Update your Goal' : "Create your Goal"}</Typography>
+                <Typography variant='h3'>{isEdit ? 'Update your Goal' : 'Create your Goal'}</Typography>
             </Grid>
             <Grid container item sx={{ justifyContent: 'center' }}>
                 <Button variant='outlined' sx={{ marginRight: '16px' }} onClick={() => navigate('/home')}>Go home</Button>
@@ -75,7 +76,7 @@ function CreateGoal() {
                     mutators={{
                         ...arrayMutators
                     }}
-                    initialValues={initialValues}
+                    initialValues={{goalColor: '#FDFDA4',...initialValues}}
                     render={({ handleSubmit, form: {
                         mutators: { push }
                     }, }) => (
@@ -102,6 +103,10 @@ function CreateGoal() {
                                     >
                                         Add Step
                                     </Button>
+                                    <Field name='goalColor'>
+                                        {({ input }) => <ColorSelect input={input} /> }
+                                    </Field>
+
                                 </Grid>
                                 <Grid item>
                                     <FieldArray name='steps'>

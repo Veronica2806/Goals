@@ -17,10 +17,10 @@ router.get('/nextSteps/:userId', authMiddleware, async (req, res) => {
     try {
         const goals = await Goal.find({userId: req.params.userId});
         const firstSteps = [];
-        //TODO: only uncompleted steps should be returned
         for (let i = 0; i < goals.length; i++) {
             const notCompletedTask = goals[i].steps.find((step) => !step.completed);
             if (notCompletedTask) {
+                notCompletedTask.goalColor = goals[i].goalColor;
                 notCompletedTask.goalId = goals[i]._id;
                 firstSteps.push(notCompletedTask);
             }

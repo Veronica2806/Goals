@@ -8,7 +8,7 @@ function StepCard(props) {
             key={step._id}
             sx={{
                 width: 250,
-                background: '#FDFDA4',
+                background: step.goalColor,
                 marginRight: '16px'
             }}
             raised>

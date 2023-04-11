@@ -11,7 +11,11 @@ const StepSchema = new mongoose.Schema({
     completed: {
         type: Boolean,
         default: false
-    }
+    },
+    goalColor: {
+        type: String,
+        required: false
+    },
 });
 
 const goalSchema = new mongoose.Schema({
@@ -45,6 +49,10 @@ const goalSchema = new mongoose.Schema({
         required: false
     },
     userId: {
+        type: String,
+        required: true
+    },
+    goalColor: {
         type: String,
         required: true
     }
