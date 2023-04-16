@@ -9,6 +9,16 @@ const theme = createTheme({
   typography: {
     fontFamily: 'Montserrat',
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontWeight: '600',
+          fontFamily: 'Raleway'
+        },
+      },
+    },
+  },
 });
 
 function App() {

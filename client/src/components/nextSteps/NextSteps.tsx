@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Typography, Grid, Alert } from '@mui/material';
 import type { Event } from "../../pages/application/types";
@@ -12,14 +12,7 @@ function NextSteps() {
     const [loading, setLoading] = useState(true);
     const userId = localStorage.getItem('userId');
     const isAuthenticated = localStorage.getItem('AccessToken')
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            getNextSteps()
-        }
-    }, [location, isAuthenticated]);
-
-    async function getNextSteps() {
+    const getNextSteps = useCallback(async () => {
         try {
             const response = await query(`goals/nextSteps/${userId}`, "get");
             const data = await response.json();
@@ -29,7 +22,13 @@ function NextSteps() {
         catch (error) {
             setError(error.message);
         }
-    }
+      }, [userId]);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            getNextSteps()
+        }
+    }, [location, isAuthenticated, getNextSteps]);
 
     async function onCompleteStepChange( event: Event, id: string, goalId: string) {
         const newValue = event.target.value === 'true';

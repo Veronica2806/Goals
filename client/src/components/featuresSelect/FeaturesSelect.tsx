@@ -2,9 +2,7 @@ import { MenuItem, Button } from '@mui/material';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import { styled, alpha } from '@mui/material/styles';
 import { useState } from 'react';
-import createClasses from './styles'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu
@@ -50,8 +48,7 @@ const StyledMenu = styled((props: MenuProps) => (
 
 
 function FeaturesSelect(props) {
-    const { onDeleteClick, onChangeColorClick, onEditStepsClick, goalId } = props;
-    const classes = createClasses();
+    const { onChangeColorClick } = props;
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -87,7 +84,6 @@ function FeaturesSelect(props) {
                         handleClose()
                     }}
                     disableRipple>
-
                     Change color
                 </MenuItem>
                

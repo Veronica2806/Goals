@@ -20,7 +20,7 @@ function CreateGoal() {
         if (isEdit) {
             getGoalData(goalId);
         }
-    }, [isEdit]);
+    }, [isEdit, goalId]);
 
     const getGoalData = async (goalId) => {
         try {

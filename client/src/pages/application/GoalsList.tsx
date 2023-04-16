@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import type { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Grid, Button } from '@mui/material';
@@ -13,11 +13,7 @@ function GoalsList() {
     const [loading, setLoading] = useState(true);
     const userId = localStorage.getItem('userId');
 
-    useEffect(() => {
-        getGoals();
-    }, [])
-
-    async function getGoals() {
+    const getGoals = useCallback(async () => {
         try {
             const response = await query(`goals/${userId}`, "get");
             const data = await response.json();
@@ -27,7 +23,11 @@ function GoalsList() {
         catch (error) {
             setError(error.message)
         }
-    }
+      }, [userId]);
+
+    useEffect(() => {
+        getGoals();
+    }, [getGoals])
 
     async function onCompleteGoalChange(event: Event, id: string) {
         const newValue = event.target.value === 'true';
