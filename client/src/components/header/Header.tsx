@@ -20,7 +20,7 @@ function Header() {
     return (
         <Grid container item className={classes.container} direction="row" wrap="nowrap" columns={12}>
             <Grid item container xs={9} >
-                <Typography variant='h4'>Your goals</Typography>
+                <Typography variant='h4'>Get your life organized</Typography>
             </Grid>
 
 

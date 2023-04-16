@@ -3,12 +3,21 @@ import {
 } from 'react-router-dom';
 import AppRoutes from './routes/AppRoutes.tsx';
 import PageLayout from './components/pageLayout/PageLayout';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Montserrat',
+  },
+});
 
 function App() {
   return (
-    <BrowserRouter>
-      <PageLayout content={AppRoutes} />
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <PageLayout content={AppRoutes} />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

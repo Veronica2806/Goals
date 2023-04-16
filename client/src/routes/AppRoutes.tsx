@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import GoalsList from "../pages/application/GoalsList";
 import GoalForm from "../pages/application/GoalForm";
-import GoalDetails from "../pages/application/GoalDetails";
+import GoalDetails from "../pages/application/GoalDetails/GoalDetails";
 import Registration from "../pages/auth/registration/Registration";
 import Login from "../pages/auth/login/Login";
 

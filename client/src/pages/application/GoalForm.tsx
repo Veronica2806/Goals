@@ -39,6 +39,7 @@ function CreateGoal() {
         const body = {
             ...values,
             userId,
+            steps: values.steps || [],
             lastEdited: Date.now(),
             createdDate: isEdit ? initialValues.createdDate : Date.now()
         }
@@ -72,90 +73,73 @@ function CreateGoal() {
                     mutators={{
                         ...arrayMutators
                     }}
-                    initialValues={{goalColor: '#FDFDA4',...initialValues}}
+                    initialValues={{ goalColor: '#FDFDA4', ...initialValues }}
                     render={({ handleSubmit, form: {
                         mutators: { push }
                     }, }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Grid sx={{ justifyContent: 'center' }} container direction={'column'}>
-                                <Grid item container sx={{ justifyContent: 'center' }}>
-                                    <Grid item sx={{ marginRight: '8px' }}>
-                                        <Typography>Name</Typography>
-                                        <Field name='name' component='input' placeholder='Goal name' />
-                                    </Grid>
-                                    <Grid item sx={{ marginRight: '8px' }}>
-                                        <Typography>Description</Typography>
-                                        <Field name='description' component='input' placeholder='Goal Description' />
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography>Due Date</Typography>
-                                        <Field name='dueDate' component='input' placeholder='Goal Due Date' />
-                                    </Grid>
-                                    <Button
-                                        variant='contained'
-                                        onClick={() => push('steps', undefined)}
-                                        sx={{ margin: '16px', width: '100px' }}
-                                        size={'small'}
-                                    >
-                                        Add Step
-                                    </Button>
-                                    <Field name='goalColor'>
-                                        {({ input }) => <ColorSelect input={input} /> }
-                                    </Field>
-
+                        <Grid sx={{ justifyContent: 'center' }} container direction={'column'}>
+                            <Grid item container sx={{ justifyContent: 'center' }}>
+                                <Grid item sx={{ marginRight: '8px' }}>
+                                    <Typography>Name</Typography>
+                                    <Field name='name' component='input' placeholder='Goal name' />
+                                </Grid>
+                                <Grid item sx={{ marginRight: '8px' }}>
+                                    <Typography>Description</Typography>
+                                    <Field name='description' component='input' placeholder='Goal Description' />
                                 </Grid>
                                 <Grid item>
-                                    <FieldArray name='steps'>
-                                        {({ fields }) =>
-                                            fields.map((name, index) => (
-                                                <Grid key={name} item>
-                                                    <Typography>Step {index + 1}</Typography>
-                                                    <Grid item container alignItems={'end'}>
-                                                        <Grid item sx={{ marginRight: '8px' }}>
-                                                            <Field
-                                                                name={`${name}.name`}
-                                                                component='input'
-                                                                placeholder='Step name'
-                                                            />
-                                                        </Grid>
-                                                        <Grid item sx={{ marginRight: '8px' }}>
-                                                            <Field
-                                                                name={`${name}.description`}
-                                                                component='input'
-                                                                placeholder='Step description'
-                                                            />
-                                                        </Grid>
-                                                        <Grid item>
-                                                            <Field
-                                                                name={`${name}.dueDate`}
-                                                                component='input'
-                                                                placeholder='Step Due Date'
-                                                            />
-                                                        </Grid>
-                                                        <Grid item >
-                                                            <Button
-                                                                variant='contained'
-                                                                color={'error'}
-                                                                size={'small'}
-                                                                sx={{ marginLeft: '16px' }}
-                                                                onClick={() => fields.remove(index)}>
-                                                                X
-                                                            </Button>
-                                                        </Grid>
-                                                    </Grid>
-                                                </Grid>
-                                            ))
-                                        }
-                                    </FieldArray>
+                                    <Typography>Due Date</Typography>
+                                    <Field name='dueDate' component='input' placeholder='Goal Due Date' />
                                 </Grid>
                                 <Button
                                     variant='contained'
-                                    onClick={handleSubmit}
-                                    sx={{ margin: '16px auto', width: '100px' }}>
-                                    {goalId ? 'Update' : 'Create'}
+                                    onClick={() => push('steps', undefined)}
+                                    sx={{ margin: '16px', width: '100px' }}
+                                    size={'small'}
+                                >
+                                    Add Step
                                 </Button>
+                                <Field name='goalColor'>
+                                    {({ input }) => <ColorSelect input={input} />}
+                                </Field>
+
                             </Grid>
-                        </form>
+                            <Grid item>
+                                <FieldArray name='steps'>
+                                    {({ fields }) =>
+                                        fields.map((name, index) => (
+                                            <Grid key={name} item>
+                                                <Typography>Step {index + 1}</Typography>
+                                                <Grid item container alignItems={'end'}>
+                                                    <Grid item sx={{ marginRight: '8px' }}>
+                                                        <Field
+                                                            name={`${name}.name`}
+                                                            component='input'
+                                                        />
+                                                    </Grid>
+                                                    <Grid item >
+                                                        <Button
+                                                            variant='contained'
+                                                            color={'error'}
+                                                            size={'small'}
+                                                            sx={{ marginLeft: '16px' }}
+                                                            onClick={() => fields.remove(index)}>
+                                                            X
+                                                        </Button>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        ))
+                                    }
+                                </FieldArray>
+                            </Grid>
+                            <Button
+                                variant='contained'
+                                onClick={handleSubmit}
+                                sx={{ margin: '16px auto', width: '100px' }}>
+                                {goalId ? 'Update' : 'Create'}
+                            </Button>
+                        </Grid>
                     )} />
             </Grid>
         </Grid>

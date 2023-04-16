@@ -2,7 +2,7 @@ import makeStyles from "@mui/styles/makeStyles";
 
 const createClasses = makeStyles(() => ({
     container: {
-        height: '95vh',
+        height: '95vh'
     },
     innerContainer: {
         height: '86%',

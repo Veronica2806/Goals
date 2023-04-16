@@ -1,4 +1,4 @@
-import { Checkbox, CardContent, Card, Typography, CardActions, Button } from '@mui/material';
+import { Checkbox, CardContent, Card, Typography, CardActions, Button, Grid } from '@mui/material';
 
 function GoalCard(props) {
     const { goal, onCardClick, onCompleteGoalChange, onUpdateClick, onDeleteClick } = props
@@ -9,20 +9,21 @@ function GoalCard(props) {
             variant="outlined"
             onClick={event => onCardClick(event, goal._id)}>
             <CardContent>
-                <Typography variant='h5' component='div'>
-                    {goal.name}
+                <Grid container alignItems='center'>
+                    <Typography variant='h5' noWrap={true} width='80%' sx={{fontWeight: 400}}>
+                        {goal.name}
+                    </Typography>
                     <Checkbox
                         checked={goal.completed}
                         value={goal.completed}
                         onClick={event => event.stopPropagation()}
                         onChange={event => onCompleteGoalChange(event, goal._id)} />
-
-                </Typography>
-                <Typography variant='body2'>
+                </Grid>
+                <Typography variant='body2' noWrap={true}>
                     {goal.description}
                 </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions >
                 <Button size='small' onClick={event => onUpdateClick(event, goal._id)}>Update</Button>
                 <Button size='small' onClick={event => onDeleteClick(event, goal._id)}>Delete</Button>
             </CardActions>
