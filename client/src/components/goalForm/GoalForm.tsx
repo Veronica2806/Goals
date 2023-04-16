@@ -7,6 +7,7 @@ import { TextareaAutosize } from '@mui/base';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+// import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 
 import convertDate from 'tools/convertDate';
 import createClasses from './styles';
@@ -24,6 +25,8 @@ function GoalForm(props) {
     const classes = createClasses();
     const localeCreatedDate = convertDate(goal?.createdDate);
     const localelastEditedDate = convertDate(goal?.lastEdited);
+    const foldersStr = localStorage.getItem('folders');
+    const folders = JSON.parse(foldersStr);
 
     useEffect(() => {
         if (!isEdit) {
@@ -46,7 +49,7 @@ function GoalForm(props) {
 
                         <CardContent>
                             <Grid container item justifyContent='flex-end' alignItems='center'>
-                                {!pristine || !isEdit && <Button size='small' onClick={handleSubmit}>Save Changes</Button>}
+                                {(!pristine || !isEdit) && <Button size='small' onClick={handleSubmit}>Save Changes</Button>}
                                 {isEdit && <IconButton color='primary' onClick={() => onDeleteClick(goal._id)}><DeleteIcon /></IconButton>}
                             </Grid>
 

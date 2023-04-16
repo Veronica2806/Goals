@@ -92,5 +92,17 @@ router.delete('/:goalId/delete', authMiddleware, async (req, res) => {
     }
 })
 
+router.patch('/:goalId/updateFolder/:folderId', authMiddleware, async (req, res) => {
+    try {
+        const goal = await Goal.findById(req.params.goalId);
+        goal.folderId = req.params.folderId;
+        const updatedGoal = await goal.save();
+        res.json(updatedGoal);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 
 module.exports = router;

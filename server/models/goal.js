@@ -55,6 +55,10 @@ const goalSchema = new mongoose.Schema({
     goalColor: {
         type: String,
         required: true
+    },
+    folderId: {
+        type: String,
+        required: false
     }
 })
 
