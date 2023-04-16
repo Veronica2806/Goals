@@ -17,8 +17,8 @@ const theme = createTheme({
           fontFamily: 'Raleway'
         },
       },
-    },
-  },
+    }
+  }
 });
 
 function App() {

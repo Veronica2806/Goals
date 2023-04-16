@@ -1,7 +1,8 @@
 import { Grid } from '@mui/material';
 import Header from '../header/Header';
 import createClasses from './styles';
-import NextSteps from "../nextSteps/NextSteps";
+import NextSteps from "../../pages/application/NextSteps/NextSteps";
+import FoldersList from 'components/foldersList/FoldersList';
 
 function PageLayout(props) { //types
     const { content: InnerContent } = props;
@@ -27,16 +28,15 @@ function PageLayout(props) { //types
                 justifyContent="flex-start"
             >
 
-                <Grid item xs={2} padding={2} pt={10} className={classes.scrollableContainer} sx={{borderRight: '1px solid white'}}>
-                    feature list of the folders
-
+                <Grid item xs={2} padding={2} pt={10} className={classes.scrollableContainer} sx={{ borderRight: '1px solid white' }}>
+                    <FoldersList />
                 </Grid>
 
                 <Grid item xs={8} padding={2} className={classes.scrollableContainer}>
                     <InnerContent />
                 </Grid>
-                <Grid item xs={2} padding={2} pt={10} className={classes.scrollableContainer} sx={{borderLeft: '1px solid white'}}>
-                    <NextSteps />
+                <Grid item xs={2} padding={2} pt={10} className={classes.scrollableContainer} sx={{ borderLeft: '1px solid white' }}>
+                   <NextSteps />
                 </Grid>
             </Grid>
 

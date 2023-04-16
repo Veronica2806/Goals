@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const StepSchema = new mongoose.Schema({
+const stepSchema = new mongoose.Schema({
     name: String,
     description: String,
     dueDate: Date,
@@ -33,7 +33,7 @@ const goalSchema = new mongoose.Schema({
         default: false
     },
     steps: {
-        type: [StepSchema],
+        type: [stepSchema],
         required: true
     },
     dueDate: {

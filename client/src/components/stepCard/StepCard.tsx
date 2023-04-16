@@ -6,7 +6,7 @@ function StepCard(props) {
     const navigate = useNavigate();
 
     function onStepClick() {
-        navigate(`/goalslist/${step.goalId}`)
+        navigate(`/goal/${step.goalId}`)
     }
     return (
         <Card

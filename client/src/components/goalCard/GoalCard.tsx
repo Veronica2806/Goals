@@ -24,7 +24,6 @@ function GoalCard(props) {
                 </Typography>
             </CardContent>
             <CardActions >
-                <Button size='small' onClick={event => onUpdateClick(event, goal._id)}>Update</Button>
                 <Button size='small' onClick={event => onDeleteClick(event, goal._id)}>Delete</Button>
             </CardActions>
         </Card>

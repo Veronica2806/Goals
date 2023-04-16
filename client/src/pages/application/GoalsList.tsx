@@ -51,7 +51,7 @@ function GoalsList() {
 
     function onCardClick(event: MouseEvent<HTMLElement>, goalId) {
         event.stopPropagation();
-        navigate(`/goalslist/${goalId}`)
+        navigate(`/goal/${goalId}`)
     }
 
     function onUpdateClick(event: MouseEvent<HTMLElement>, goalId) {

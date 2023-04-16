@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Typography, Grid, Alert } from '@mui/material';
-import type { Event } from "../../pages/application/types";
+import type { Event } from "../types";
 import query from "tools/query";
 import StepCard from 'components/stepCard/StepCard';
 
