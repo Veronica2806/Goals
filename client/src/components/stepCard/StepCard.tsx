@@ -26,7 +26,7 @@ function StepCard(props) {
                 <Checkbox
                     checked={step.completed}
                     value={step.completed}
-                    onClick={e => e.stopPropagation()}
+                    onClick={event => event.stopPropagation()}
                     onChange={event=>onCompleteStepChange(event, step._id, step.goalId)} />
 
             </Grid>

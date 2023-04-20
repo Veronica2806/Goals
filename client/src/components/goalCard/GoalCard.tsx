@@ -1,7 +1,7 @@
 import { Checkbox, CardContent, Card, Typography, CardActions, Button, Grid } from '@mui/material';
 
 function GoalCard(props) {
-    const { goal, onCardClick, onCompleteGoalChange, onUpdateClick, onDeleteClick } = props
+    const { goal, onCardClick, onCompleteGoalChange, onDeleteClick } = props
 
     return (
         <Card

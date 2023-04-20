@@ -12,6 +12,7 @@ import Login from "../pages/auth/login/Login";
 function AppRoutes() {
     return (
         <Routes>
+            <Route path="/goalslist/:folderId" element={<GoalsList/>}/>
             <Route path="/goalslist" element={<GoalsList/>}/>
             <Route path="/goal/:goalId" element={<GoalDetails/>}/>
             <Route path="/goal" element={<GoalCreate/>}/>

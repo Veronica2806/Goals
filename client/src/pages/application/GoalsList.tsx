@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import type { MouseEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Typography, Grid, Button } from '@mui/material';
 import type { Event } from "./types";
 import query from "tools/query";
@@ -8,14 +8,16 @@ import GoalCard from 'components/goalCard/GoalCard';
 
 function GoalsList() {
     const navigate = useNavigate();
-    const [goals, setGoals] = useState([])
+    const [goals, setGoals] = useState([]);
     const [error, setError] = useState();
     const [loading, setLoading] = useState(true);
     const userId = localStorage.getItem('userId');
+    const { folderId } = useParams<string>();
 
     const getGoals = useCallback(async () => {
         try {
-            const response = await query(`goals/${userId}`, "get");
+            const path = folderId ? `goals/${userId}/${folderId}` : `goals/${userId}`
+            const response = await query(path, "get");
             const data = await response.json();
             setGoals(data);
             setLoading(false)
@@ -23,7 +25,7 @@ function GoalsList() {
         catch (error) {
             setError(error.message)
         }
-      }, [userId]);
+    }, [userId, folderId]);
 
     useEffect(() => {
         getGoals();

@@ -3,19 +3,10 @@ const Goal = require('../models/goal');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware')
 
-router.get('/:userId', authMiddleware, async (req, res) => {
-    try {
-        const goals = await Goal.find({userId: req.params.userId});
-        res.json(goals);
-    }
-    catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-})
 
 router.get('/nextSteps/:userId', authMiddleware, async (req, res) => {
     try {
-        const goals = await Goal.find({userId: req.params.userId});
+        const goals = await Goal.find({ userId: req.params.userId });
         const firstSteps = [];
         for (let i = 0; i < goals.length; i++) {
             const notCompletedTask = goals[i].steps.find((step) => !step.completed);
@@ -92,10 +83,10 @@ router.delete('/:goalId/delete', authMiddleware, async (req, res) => {
     }
 })
 
-router.patch('/:goalId/updateFolder/:folderId', authMiddleware, async (req, res) => {
+router.patch('/:goalId/updateFolder', authMiddleware, async (req, res) => {
     try {
         const goal = await Goal.findById(req.params.goalId);
-        goal.folderId = req.params.folderId;
+        goal.folderId = req.body.folderId;
         const updatedGoal = await goal.save();
         res.json(updatedGoal);
     }
@@ -103,6 +94,26 @@ router.patch('/:goalId/updateFolder/:folderId', authMiddleware, async (req, res)
         res.status(500).json({ message: err.message });
     }
 });
+
+router.get('/:userId', authMiddleware, async (req, res) => {
+    try {
+        const goals = await Goal.find({ userId: req.params.userId });
+        res.json(goals);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+})
+
+router.get('/:userId/:folderId', authMiddleware, async (req, res) => {
+    try {
+        const goals = await Goal.find({ userId: req.params.userId, folderId: req.params.folderId });
+        res.json(goals);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+})
 
 
 module.exports = router;
