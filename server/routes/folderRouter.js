@@ -1,5 +1,6 @@
 const express = require('express');
 const Folder = require('../models/folder');
+const Goal = require('../models/goal');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware')
 
@@ -26,8 +27,10 @@ router.get('/:userId', authMiddleware, async (req, res) => {
 
 router.delete('/:folderId', authMiddleware, async (req, res) => {
     try {
-        const folder = await Folder.findById(req.params.folderId);
+        const folderId = req.params.folderId;
+        const folder = await Folder.findById(folderId);
         if (folder) {
+            await Goal.updateMany({ folderId }, { $set: { folderId: '' } })
             await folder.remove();
         }
         res.json('deleted');
