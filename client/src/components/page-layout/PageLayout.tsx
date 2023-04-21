@@ -1,8 +1,7 @@
 import { Grid } from '@mui/material';
-import { Header } from 'components';
+import { Header, FoldersList} from './components';
 import createClasses from './styles';
 import NextSteps from "../../pages/application/NextSteps/NextSteps";
-import { FoldersList } from 'components';
 
 export function PageLayout(props) { //types
     const { content: InnerContent } = props;

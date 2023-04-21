@@ -1,25 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays';
-import { FieldArray } from 'react-final-form-arrays';
-import { Checkbox, CardContent, Card, Typography, Grid, Button, Input, IconButton } from '@mui/material';
+import { Checkbox, CardContent, Card, Typography, Grid, Button, IconButton } from '@mui/material';
 import { TextareaAutosize } from '@mui/base';
-import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-
 import convertDate from 'tools/convertDate';
 import createClasses from './styles';
-import { ColorSelect, FolderSelect } from 'components';
+import { FolderSelect } from 'components/common';
+import { GoalSteps, ColorSelect } from './components';
 
 const newGoal = {
     steps: [],
-    goalColor: "#FDFDA4"
+    goalColor: "#FDFDA4",
+    folderId: ""
 }
 
-
 export function GoalForm(props) {
-    const { onSubmit, goal = newGoal, onDeleteClick, onCompleteGoalChange, onCompleteStepChange, goalId } = props;
+    const { onSubmit, goal = newGoal, onDeleteClick, onCompleteGoalChange, onCompleteStepChange, goalId, onFolderClick, folders } = props;
     const isEdit = Boolean(goalId);
     const classes = createClasses();
     const localeCreatedDate = convertDate(goal?.createdDate);
@@ -47,7 +44,11 @@ export function GoalForm(props) {
                         <CardContent>
                             <Grid container item justifyContent='flex-end' alignItems='center' wrap='nowrap'>
                                 {(!pristine || !isEdit) && <Button size='small' onClick={handleSubmit}>Save Changes</Button>}
-                                {isEdit && <FolderSelect goal={goal} />}
+
+                                <Field name='folderId'>
+                                    {({ input }) => <FolderSelect folders={folders} onChange={isEdit ? onFolderClick : input.onChange} value={input.value} />}
+                                </Field>
+
                                 {isEdit && <IconButton color='primary' onClick={() => onDeleteClick(goal._id)}><DeleteIcon /></IconButton>}
                             </Grid>
 
@@ -80,51 +81,16 @@ export function GoalForm(props) {
                                     />}
                             </Field>
 
-                            <Grid container item justifyContent='left' alignItems='center'>
-                                <Typography variant='h6'>
-                                    Steps:
-                                </Typography>
-                                <Button variant='text' onClick={() => push('steps', undefined)} startIcon={<AddIcon />}>
-                                    Add
-                                </Button>
-
-                            </Grid>
-
-                            <FieldArray name='steps'>
-                                {({ fields }) =>
-                                    fields.map((name, index) => {
-                                        const isComplited = goal.steps[index]?.completed || false
-                                        const stepId = goal.steps[index]?._id || "";
-                                        return (<Grid key={name} item>
-                                            <Grid item container alignItems={'end'}>
-                                                <Grid container item alignItems='center'>
-                                                    <Field name={`${name}.name`}>
-                                                        {({ input }) => <Input {...input} />}
-                                                    </Field>
-                                                    {isEdit && <Checkbox
-                                                        checked={isComplited}
-                                                        value={isComplited}
-                                                        onChange={(event) => onCompleteStepChange(stepId, event)} />}
-                                                    <HighlightOffIcon
-                                                        sx={{ cursor: 'pointer' }}
-                                                        fontSize='small'
-                                                        color='error'
-                                                        onClick={() => fields.remove(index)}
-                                                    />
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
-                                        )
-                                    }
-                                    )
-                                }
-                            </FieldArray>
+                            <GoalSteps
+                                goal={goal}
+                                isEdit={isEdit}
+                                push={push}
+                                onCompleteStepChange={onCompleteStepChange} />
 
                         </CardContent>
 
-                        <Grid item container alignItems='center' alignSelf='end' justifyContent='space-between' className={classes.goalFooter}>
+                        <Grid item container alignItems='center' alignSelf='end' justifyContent='space-between'>
                             <Grid pl={2}>
-
                                 <Field name='goalColor'>
                                     {({ input }) => <ColorSelect input={input} />}
                                 </Field>

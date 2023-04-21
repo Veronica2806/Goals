@@ -1,7 +1,7 @@
 import { IconButton, Tooltip } from '@mui/material';
 import createClasses from './styles';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
-import { Popper } from 'components';
+import { Popper } from 'components/common';
 
 const colorsMap = {
     Yellow: '#FDFDA4',

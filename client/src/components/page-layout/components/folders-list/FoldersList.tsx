@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import createClasses from './styles';
 import query from 'tools/query';
-import { Popper } from 'components';
+import { Popper } from 'components/common';
 
 export function FoldersList(props) { //types
     const classes = createClasses();

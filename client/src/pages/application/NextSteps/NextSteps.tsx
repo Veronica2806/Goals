@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Typography, Grid, Alert } from '@mui/material';
 import type { Event } from "../types";
 import query from "tools/query";
-import { StepCard } from 'components';
+import { StepCard } from 'components/common';
 
 function NextSteps() {
     let location = useLocation();

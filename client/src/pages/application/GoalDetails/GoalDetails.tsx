@@ -5,11 +5,17 @@ import type { Event, Goal } from '../types';
 import query from 'tools/query';
 import { GoalForm } from 'components';
 
+const ALL_GOALS_FOLDER = {
+    name: "All goals",
+    _id: ""
+}
+
 function GoalDetails() {
     const navigate = useNavigate();
     const { goalId } = useParams<string>();
     const [goal, setGoal] = useState<Goal>();
     const [error, setError] = useState();
+    const [folders, setFolders] = useState([])
     const userId = localStorage.getItem('userId');
 
     async function getGoal(goalId: string) {
@@ -23,6 +29,7 @@ function GoalDetails() {
     }
     useEffect(() => {
         getGoal(goalId);
+        getFolders();
     }, [goalId])
 
     async function onCompleteStepChange(id: string, event: Event) {
@@ -56,6 +63,23 @@ function GoalDetails() {
         } catch (err) {
             setError(error)
         }
+    }
+
+    async function getFolders() {
+        try {
+            const response = await query(`folder/${userId}`, 'GET');
+            const data = await response.json();
+
+            data.unshift(ALL_GOALS_FOLDER);
+            setFolders(data);
+
+        } catch (error) {
+            setError(error.message)
+        }
+    }
+
+    async function onFolderClick(folderId) {
+        await query(`goals/${goalId}/updateFolder`, 'patch', { folderId });
     }
 
     async function onSubmit(values: Goal) {
@@ -98,7 +122,9 @@ function GoalDetails() {
                 onDeleteClick={onDeleteClick}
                 onCompleteGoalChange={onCompleteGoalChange}
                 onCompleteStepChange={onCompleteStepChange}
-                goalId={goalId} />
+                goalId={goalId}
+                folders={folders} 
+                onFolderClick={onFolderClick}/>
         </Grid >
     )
 }

@@ -28,11 +28,6 @@ const createClasses = makeStyles(() => ({
         paddingBottom: '8px',
         borderBottom: '1px solid black',
     },
-    goalFooter: {
-        // borderTop: '1px solid rgba(236, 236, 236, 0.43)',
-        // backgroundColor: 'rgba(236, 236, 236, 0.43)',
-        // boxShadow: '0px 1px 10px 10px rgba(236, 236, 236, 0.43)'
-    },
     goalCard: {
         width: 700, 
         minHeight: 500, 
