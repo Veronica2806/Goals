@@ -1,10 +1,10 @@
 import { Grid } from '@mui/material';
-import Header from '../header/Header';
+import { Header } from 'components';
 import createClasses from './styles';
 import NextSteps from "../../pages/application/NextSteps/NextSteps";
-import FoldersList from 'components/foldersList/FoldersList';
+import { FoldersList } from 'components';
 
-function PageLayout(props) { //types
+export function PageLayout(props) { //types
     const { content: InnerContent } = props;
     const classes = createClasses();
 
@@ -36,12 +36,10 @@ function PageLayout(props) { //types
                     <InnerContent />
                 </Grid>
                 <Grid item xs={2} padding={2} pt={10} className={classes.scrollableContainer} sx={{ borderLeft: '1px solid white' }}>
-                   <NextSteps />
+                    <NextSteps />
                 </Grid>
             </Grid>
 
         </Grid>
     )
 }
-
-export default PageLayout;

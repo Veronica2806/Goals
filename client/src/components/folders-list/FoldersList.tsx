@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import createClasses from './styles';
 import query from 'tools/query';
-import Popper from 'components/popper/Popper';
+import { Popper } from 'components';
 
-function FoldersList(props) { //types
+export function FoldersList(props) { //types
     const classes = createClasses();
     const navigate = useNavigate();
     const [folders, setFolders] = useState([])
@@ -87,5 +87,3 @@ function FoldersList(props) { //types
             ) : 'no folders'}
         </Grid>)
 }
-
-export default FoldersList;

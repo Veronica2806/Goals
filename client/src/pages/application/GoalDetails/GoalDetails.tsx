@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Typography, Grid, Button } from '@mui/material';
 import type { Event, Goal } from '../types';
 import query from 'tools/query';
-import GoalForm from 'components/goalForm/GoalForm';
+import { GoalForm } from 'components';
 
 function GoalDetails() {
     const navigate = useNavigate();

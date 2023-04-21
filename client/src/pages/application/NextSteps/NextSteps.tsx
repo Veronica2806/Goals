@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Typography, Grid, Alert } from '@mui/material';
 import type { Event } from "../types";
 import query from "tools/query";
-import StepCard from 'components/stepCard/StepCard';
+import { StepCard } from 'components';
 
 function NextSteps() {
     let location = useLocation();
@@ -22,7 +22,7 @@ function NextSteps() {
         catch (error) {
             setError(error.message);
         }
-      }, [userId]);
+    }, [userId]);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -30,7 +30,7 @@ function NextSteps() {
         }
     }, [location, isAuthenticated, getNextSteps]);
 
-    async function onCompleteStepChange( event: Event, id: string, goalId: string) {
+    async function onCompleteStepChange(event: Event, id: string, goalId: string) {
         const newValue = event.target.value === 'true';
         try {
             await query(`steps/${goalId}/updateStepStatus/${id}`, 'patch', { completed: !newValue, lastEdited: Date.now() })
@@ -40,7 +40,7 @@ function NextSteps() {
             setError(error.message);
         }
     }
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
         return (
             <Grid container item justifyContent='center' >
                 <Typography variant='body1'>Please login to see your next steps</Typography>

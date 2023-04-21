@@ -2,7 +2,7 @@ import { Button, Popper as MuiPopper } from '@mui/material';
 import { useState } from 'react';
 
 
-function Popper(props) { //types
+export function Popper(props) { //types
     const { trigger, content, placement = 'right' } = props
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -30,5 +30,3 @@ function Popper(props) { //types
         </>
     )
 }
-
-export default Popper;

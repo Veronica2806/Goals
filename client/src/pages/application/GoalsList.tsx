@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Typography, Grid, Button } from '@mui/material';
 import type { Event } from "./types";
 import query from "tools/query";
-import GoalCard from 'components/goalCard/GoalCard';
+import { GoalCard } from 'components';
 
 function GoalsList() {
     const navigate = useNavigate();

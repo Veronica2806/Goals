@@ -2,10 +2,10 @@ import { Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import createClasses from './styles';
 import query from 'tools/query';
-import Popper from 'components/popper/Popper';
+import { Popper } from 'components';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 
-function FolderSelect(props) { //types
+export function FolderSelect(props) { //types
     const classes = createClasses();
     const { goal: { _id: goalId, folderId } } = props;
     const [folders, setFolders] = useState([])
@@ -64,5 +64,3 @@ function FolderSelect(props) { //types
         />
     )
 }
-
-export default FolderSelect;

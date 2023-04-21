@@ -10,8 +10,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 import convertDate from 'tools/convertDate';
 import createClasses from './styles';
-import ColorSelect from 'components/colorSelect/ColorSelect';
-import FolderSelect from 'components/folder-select/FolderSelect';
+import { ColorSelect, FolderSelect } from 'components';
 
 const newGoal = {
     steps: [],
@@ -19,7 +18,7 @@ const newGoal = {
 }
 
 
-function GoalForm(props) {
+export function GoalForm(props) {
     const { onSubmit, goal = newGoal, onDeleteClick, onCompleteGoalChange, onCompleteStepChange, goalId } = props;
     const isEdit = Boolean(goalId);
     const classes = createClasses();
@@ -144,5 +143,3 @@ function GoalForm(props) {
 
 
 }
-
-export default GoalForm;

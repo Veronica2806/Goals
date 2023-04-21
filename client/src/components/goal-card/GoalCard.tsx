@@ -1,6 +1,6 @@
 import { Checkbox, CardContent, Card, Typography, CardActions, Button, Grid } from '@mui/material';
 
-function GoalCard(props) {
+export function GoalCard(props) {
     const { goal, onCardClick, onCompleteGoalChange, onDeleteClick } = props
 
     return (
@@ -29,5 +29,3 @@ function GoalCard(props) {
         </Card>
     )
 }
-
-export default GoalCard;

@@ -1,7 +1,7 @@
 import { IconButton, Tooltip } from '@mui/material';
 import createClasses from './styles';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
-import Popper from 'components/popper/Popper';
+import { Popper } from 'components';
 
 const colorsMap = {
     Yellow: '#FDFDA4',
@@ -11,7 +11,7 @@ const colorsMap = {
     LightSalmon: '#FFA07A',
 }
 
-function ColorSelect(props) {
+export function ColorSelect(props) {
     const { input: { value, onChange } } = props;
     const classes = createClasses();
 
@@ -40,5 +40,3 @@ function ColorSelect(props) {
         />
     )
 }
-
-export default ColorSelect;

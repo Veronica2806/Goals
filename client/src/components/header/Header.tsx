@@ -3,7 +3,7 @@ import { ButtonGroup, Button, Grid, Typography } from '@mui/material';
 
 import createClasses from "./styles";
 
-function Header() {
+export function Header() {
     const navigate = useNavigate();
     const classes = createClasses();
 
@@ -35,5 +35,3 @@ function Header() {
         </Grid>
     )
 }
-
-export default Header;

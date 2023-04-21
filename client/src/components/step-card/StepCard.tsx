@@ -1,7 +1,7 @@
 import { Checkbox, Grid, Card, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function StepCard(props) {
+export function StepCard(props) {
     const { step, onCompleteStepChange } = props;
     const navigate = useNavigate();
 
@@ -33,5 +33,3 @@ function StepCard(props) {
         </Card>
     )
 }
-
-export default StepCard;
