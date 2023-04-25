@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchFoldersList } from 'store/foldersList/foldersList';
 import { Typography, Grid, Button } from '@mui/material';
 import type { Event, Goal } from '../types';
 import query from 'tools/query';
 import { GoalForm } from 'components';
 
-const ALL_GOALS_FOLDER = {
-    name: "All goals",
-    _id: ""
-}
 
 function GoalDetails() {
     const navigate = useNavigate();
     const { goalId } = useParams<string>();
     const [goal, setGoal] = useState<Goal>();
+    const dispatch = useDispatch<any>();
     const [error, setError] = useState();
-    const [folders, setFolders] = useState([])
     const userId = localStorage.getItem('userId');
+    const { foldersList }: any = useSelector(state => state)
 
     async function getGoal(goalId: string) {
         try {
@@ -29,7 +28,9 @@ function GoalDetails() {
     }
     useEffect(() => {
         getGoal(goalId);
-        getFolders();
+        if (!foldersList.data) {
+            dispatch(fetchFoldersList(userId));
+        }
     }, [goalId])
 
     async function onCompleteStepChange(id: string, event: Event) {
@@ -62,19 +63,6 @@ function GoalDetails() {
             navigate('/goalslist');
         } catch (err) {
             setError(error)
-        }
-    }
-
-    async function getFolders() {
-        try {
-            const response = await query(`folder/${userId}`, 'GET');
-            const data = await response.json();
-
-            data.unshift(ALL_GOALS_FOLDER);
-            setFolders(data);
-
-        } catch (error) {
-            setError(error.message)
         }
     }
 
@@ -123,8 +111,7 @@ function GoalDetails() {
                 onCompleteGoalChange={onCompleteGoalChange}
                 onCompleteStepChange={onCompleteStepChange}
                 goalId={goalId}
-                folders={folders} 
-                onFolderClick={onFolderClick}/>
+                onFolderClick={onFolderClick} />
         </Grid >
     )
 }

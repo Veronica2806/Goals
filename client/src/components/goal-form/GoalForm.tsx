@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays';
-import { Checkbox, CardContent, Card, Typography, Grid, Button, IconButton } from '@mui/material';
+import { Checkbox, CardContent, Card, Typography, Grid, Button, IconButton, Tooltip } from '@mui/material';
 import { TextareaAutosize } from '@mui/base';
 import DeleteIcon from '@mui/icons-material/Delete';
 import convertDate from 'tools/convertDate';
@@ -49,7 +49,12 @@ export function GoalForm(props) {
                                     {({ input }) => <FolderSelect folders={folders} onChange={isEdit ? onFolderClick : input.onChange} value={input.value} />}
                                 </Field>
 
-                                {isEdit && <IconButton color='primary' onClick={() => onDeleteClick(goal._id)}><DeleteIcon /></IconButton>}
+                                {isEdit &&
+                                    <Tooltip title='Delete' placement='top' arrow={true}>
+                                        <IconButton color='primary' onClick={() => onDeleteClick(goal._id)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>}
                             </Grid>
 
                             <Grid container item justifyContent='space-between' alignItems='flex-start' className={classes.topContainer}>

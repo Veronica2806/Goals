@@ -12,6 +12,7 @@ function NextSteps() {
     const [loading, setLoading] = useState(true);
     const userId = localStorage.getItem('userId');
     const isAuthenticated = localStorage.getItem('AccessToken')
+
     const getNextSteps = useCallback(async () => {
         try {
             const response = await query(`goals/nextSteps/${userId}`, "get");

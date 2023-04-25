@@ -18,16 +18,15 @@ export function ColorSelect(props) {
     return (
         <Popper
             trigger={
-                <Tooltip title='Change color' placement='top'><IconButton
-                    color='primary'>
+                <Tooltip title='Change color' placement='top' arrow={true}>
                     <ColorLensIcon />
-                </IconButton>
                 </Tooltip>
             }
             content={
                 <div className={classes.colorsContainer} onClick={event => event.stopPropagation()}>
-                    {Object.keys(colorsMap).map(key =>
+                    {Object.keys(colorsMap).map((key, index) =>
                         <div
+                            key={index}
                             className={classes.menuItem}
                             style={{ backgroundColor: colorsMap[key], border: colorsMap[key] === value ? '2px solid red' : 'none' }}
                             onClick={(event) => {

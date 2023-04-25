@@ -1,4 +1,6 @@
 import { Grid, Button, Typography, Input } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchFoldersList } from 'store/foldersList/foldersList';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import createClasses from './styles';
@@ -8,31 +10,17 @@ import { Popper } from 'components/common';
 export function FoldersList(props) { //types
     const classes = createClasses();
     const navigate = useNavigate();
-    const [folders, setFolders] = useState([])
+    const dispatch = useDispatch<any>();
     const [error, setError] = useState();
     const [inputValue, setInputValue] = useState("");
     const userId = localStorage.getItem('userId');
     const isAuthenticated = localStorage.getItem('AccessToken');
-
-    async function getFolders() {
-        try {
-            const response = await query(`folder/${userId}`, 'GET');
-            const data = await response.json();
-
-            data.unshift({
-                name: "All goals",
-                _id: ""
-            })
-            setFolders(data);
-        } catch (error) {
-            setError(error.message)
-        }
-    }
+    const { foldersList }: any = useSelector(state => state)
 
     async function removeFolder(folderId: string) {
         try {
             await query(`folder/${folderId}`, 'DELETE');
-            getFolders();
+            dispatch(fetchFoldersList(userId));
         } catch (error) {
             setError(error.message)
         }
@@ -42,7 +30,7 @@ export function FoldersList(props) { //types
         event.stopPropagation();
         try {
             await query(`folder/${userId}`, 'PUT', { name: inputValue });
-            getFolders();
+            dispatch(fetchFoldersList(userId));
             setInputValue("")
         } catch (error) {
             setError(error.message)
@@ -55,11 +43,10 @@ export function FoldersList(props) { //types
     }
 
     useEffect(() => {
-        if (isAuthenticated) {
-            getFolders()
+        if (isAuthenticated && !foldersList.data) {
+            dispatch(fetchFoldersList(userId));
         }
     }, [isAuthenticated])
-
 
     if (error) {
         return <Typography>{error}</Typography>
@@ -79,10 +66,10 @@ export function FoldersList(props) { //types
                 </Grid>}
             />
 
-            {folders.length ? folders.map(folder =>
-                <Grid container item alignItems='center'>
+            {foldersList.data ? foldersList.data.map(folder =>
+                <Grid container item alignItems='center' key={folder._id}>
                     <Button onClick={() => onFolderClick(folder)}> {folder.name}</Button>
-                    <Button color='error' onClick={() => removeFolder(folder._id)}>X</Button>
+                    {folder._id && <Button color='error' onClick={() => removeFolder(folder._id)}>X</Button>}
                 </Grid>
             ) : 'no folders'}
         </Grid>)
