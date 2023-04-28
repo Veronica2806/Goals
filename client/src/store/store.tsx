@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import foldersListReduces from './foldersList/foldersList';
+import foldersListReducer from './foldersList/foldersList';
+import nextStepsReducer from './nextSteps/nextSteps';
 
 export const store = configureStore({
     reducer: {
-        foldersList: foldersListReduces
+        foldersList: foldersListReducer,
+        nextSteps: nextStepsReducer
     }
 })

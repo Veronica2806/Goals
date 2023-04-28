@@ -1,41 +1,30 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchNextSteps } from 'store/nextSteps/nextSteps';
 import { Typography, Grid, Alert } from '@mui/material';
 import type { Event } from "../types";
 import query from "tools/query";
 import { StepCard } from 'components/common';
 
 function NextSteps() {
-    let location = useLocation();
-    const [steps, setSteps] = useState([])
     const [error, setError] = useState();
-    const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch<any>();
     const userId = localStorage.getItem('userId');
-    const isAuthenticated = localStorage.getItem('AccessToken')
-
-    const getNextSteps = useCallback(async () => {
-        try {
-            const response = await query(`goals/nextSteps/${userId}`, "get");
-            const data = await response.json();
-            setLoading(false)
-            setSteps(data)
-        }
-        catch (error) {
-            setError(error.message);
-        }
-    }, [userId]);
+    const isAuthenticated = localStorage.getItem('AccessToken');
+    const { nextSteps }: any = useSelector(state => state);
 
     useEffect(() => {
-        if (isAuthenticated) {
-            getNextSteps()
+        if (isAuthenticated && !nextSteps.data) {
+            dispatch(fetchNextSteps(userId));
         }
-    }, [location, isAuthenticated, getNextSteps]);
+    }, [isAuthenticated])
 
     async function onCompleteStepChange(event: Event, id: string, goalId: string) {
         const newValue = event.target.value === 'true';
         try {
             await query(`steps/${goalId}/updateStepStatus/${id}`, 'patch', { completed: !newValue, lastEdited: Date.now() })
-            getNextSteps();
+            dispatch(fetchNextSteps(userId));
         }
         catch (error) {
             setError(error.message);
@@ -49,25 +38,25 @@ function NextSteps() {
         )
     }
 
-    if (loading) {
+    if (nextSteps.loading && !nextSteps.data) {
         return (
             <Grid container item justifyContent='center' >
                 <Typography>Loading ...</Typography>
             </Grid>
         )
     }
-    if (error) {
+    if (error && nextSteps.error) {
         return <Alert
             variant="outlined"
             severity="error">{error}</Alert>
     }
     return (
         <Grid container item sx={{ justifyContent: 'center' }} spacing={6}>
-            {steps.length ?
+            {nextSteps.data?.length ?
                 <>
                     <Grid item><Typography variant='h6'>Next steps to achieve your goals</Typography> </Grid>
                     <Grid container item direction={'row'} sx={{ justifyContent: 'center' }}>
-                        {steps.map((step) => <StepCard
+                        {nextSteps.data.map((step) => <StepCard
                             key={step._id}
                             step={step}
                             onCompleteStepChange={onCompleteStepChange} />)}

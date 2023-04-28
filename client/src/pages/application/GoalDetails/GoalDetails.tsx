@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFoldersList } from 'store/foldersList/foldersList';
+import { fetchNextSteps } from 'store/nextSteps/nextSteps';
 import { Typography, Grid, Button } from '@mui/material';
 import type { Event, Goal } from '../types';
 import query from 'tools/query';
@@ -39,6 +40,7 @@ function GoalDetails() {
             const response = await query(`steps/${goalId}/updateStepStatus/${id}`, 'PATCH', { completed: !newValue, lastEdited: Date.now() });
             const data = await response.json();
             getGoal(data._id);
+            dispatch(fetchNextSteps(userId));
         }
         catch (error) {
             setError(error.message)
@@ -60,6 +62,9 @@ function GoalDetails() {
     async function onDeleteClick(id: string) {
         try {
             await query(`goals/${id}/delete`, 'DELETE');
+            if (goal.steps.length) {
+                dispatch(fetchNextSteps(userId));
+            }
             navigate('/goalslist');
         } catch (err) {
             setError(error)

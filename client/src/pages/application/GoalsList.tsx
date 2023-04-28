@@ -1,5 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import type { MouseEvent } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchNextSteps } from 'store/nextSteps/nextSteps';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Typography, Grid, Button } from '@mui/material';
 import type { Event } from "./types";
@@ -8,6 +10,7 @@ import { GoalCard } from 'components/common';
 
 function GoalsList() {
     const navigate = useNavigate();
+    const dispatch = useDispatch<any>();
     const [goals, setGoals] = useState([]);
     const [error, setError] = useState();
     const [loading, setLoading] = useState(true);
@@ -41,10 +44,15 @@ function GoalsList() {
             setError(error.message)
         }
     }
+
     async function onDeleteClick(event: MouseEvent<HTMLElement>, id: string) {
         event.stopPropagation();
         try {
             await query(`goals/${id}/delete`, "delete");
+            const deletedGoal = goals.find(goal => goal._id === id);
+            if (deletedGoal.steps.length) {
+                dispatch(fetchNextSteps(userId))
+            }
             getGoals()
         } catch (error) {
             setError(error.message)
@@ -54,11 +62,6 @@ function GoalsList() {
     function onCardClick(event: MouseEvent<HTMLElement>, goalId) {
         event.stopPropagation();
         navigate(`/goal/${goalId}`)
-    }
-
-    function onUpdateClick(event: MouseEvent<HTMLElement>, goalId) {
-        event.stopPropagation();
-        navigate(`/goal/${goalId}`);
     }
 
     if (loading) {
@@ -84,7 +87,6 @@ function GoalsList() {
                         goal={goal}
                         onCardClick={onCardClick}
                         onCompleteGoalChange={onCompleteGoalChange}
-                        onUpdateClick={onUpdateClick}
                         onDeleteClick={onDeleteClick} />
                 )) :
                     <Typography>You don't have goals in your life. This is sad</Typography>

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { fetchNextSteps } from 'store/nextSteps/nextSteps';
 import { Typography, Grid, Button } from '@mui/material';
 import type { Goal } from '../types';
 import query from 'tools/query';
@@ -12,6 +14,7 @@ const ALL_GOALS_FOLDER = {
 
 function GoalCreate() {
     const navigate = useNavigate();
+    const dispatch = useDispatch<any>();
     const [error, setError] = useState();
     const [folders, setFolders] = useState([])
     const userId = localStorage.getItem('userId');
@@ -42,15 +45,18 @@ function GoalCreate() {
         try {
             const response = await query(requestLink, requestMethod, body);
             const jsonResponse = await response.json()
+            if (body.steps.length) {
+                dispatch(fetchNextSteps(userId))
+            }
             navigate(`/goal/${jsonResponse._id}`)
         } catch (error) {
             setError(error.message);
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getFolders();
-    },[])
+    }, [])
 
     if (error) {
         return <Typography>{error}</Typography>
