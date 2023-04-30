@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays';
-import { Typography, Grid, Button} from '@mui/material';
+import { Typography, Grid, Button } from '@mui/material';
 import query from 'tools/query';
 
 function Registration() {
@@ -35,7 +35,7 @@ function Registration() {
                     }}
                     initialValues={[]}
                     render={({ handleSubmit }) => (
-                        <Grid sx={{ justifyContent: 'center' }} container direction={'column'}>
+                        <Grid justifyContent='center' container direction='column' alignItems='center'>
                             <Grid item container sx={{ justifyContent: 'center' }}>
                                 <Grid item sx={{ marginRight: '8px' }}>
                                     <Typography>Email</Typography>
@@ -62,7 +62,7 @@ function Registration() {
                                 sx={{ margin: '16px auto', width: '200px' }}>
                                 {"Create an Account"}
                             </Button>
-                            <Typography>Already have an account?</Typography>
+                            <Typography mt={20} mb={2}>Already have an account?</Typography>
                             <Button
                                 variant='contained'
                                 onClick={() => navigate('/login')}
