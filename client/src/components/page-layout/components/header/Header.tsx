@@ -3,17 +3,15 @@ import { ButtonGroup, Button, Grid, Typography } from '@mui/material';
 
 import createClasses from "./styles";
 
-export function Header() {
+export function Header(props) {
+    const { user } = props;
     const navigate = useNavigate();
     const classes = createClasses();
-
-    const user = localStorage.getItem('user');
-    const userObj = JSON.parse(user);
     const isAuthenticated = localStorage.getItem('AccessToken') && user;
+
     function logout() {
         localStorage.removeItem('AccessToken');
         localStorage.removeItem('userId');
-        localStorage.removeItem('user');
         navigate('/login')
     }
 
@@ -26,7 +24,7 @@ export function Header() {
 
             {isAuthenticated &&
                 <Grid item container direction="row" justifyContent="flex-end" alignItems="center" xs={3} >
-                    <Typography mr={2}>{userObj.firstName} {userObj.lastName}</Typography>
+                    <Typography mr={2}>{user.firstName} {user.lastName}</Typography>
                     <ButtonGroup>
                         <Button variant="contained" color='primary' onClick={logout}>Logout</Button>
                     </ButtonGroup>

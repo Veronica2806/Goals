@@ -27,7 +27,6 @@ function Login() {
             if (response.ok) {
                 const { token, user } = await response.json();
                 localStorage.setItem('AccessToken', token);
-                localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem('userId', user._id);
                 setContext({ isAuthenticated: true });
                 navigate('/goalslist')

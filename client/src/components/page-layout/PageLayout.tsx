@@ -1,15 +1,26 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Grid } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { Header, FoldersList } from './components';
 import createClasses from './styles';
 import { AppContext } from 'tools/context';
 import NextSteps from "../../pages/application/NextSteps/NextSteps";
+import { fetchUserInfo } from 'store/userInfo/userInfoGet';
 
 export function PageLayout(props) { //types
     const { content: InnerContent } = props;
     const classes = createClasses();
+    const dispatch = useDispatch<any>();
     const { context } = useContext(AppContext);
     const isAuthenticated = context.isAuthenticated;
+    const userId = localStorage.getItem('userId');
+    const { userInfo }: any = useSelector(state => state);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            dispatch(fetchUserInfo(userId));
+        }
+    }, [isAuthenticated]);
 
     return (
         <Grid container className={classes.container}
@@ -19,7 +30,7 @@ export function PageLayout(props) { //types
             wrap="nowrap"
         >
             <Grid container item padding={0.5}>
-                <Header />
+                <Header user={userInfo.data} />
             </Grid>
 
             <Grid
