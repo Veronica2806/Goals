@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     meta: {
-        goalView: {
+        goalListView: {
             type: String,
             required: false
         }, 

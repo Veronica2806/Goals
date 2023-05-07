@@ -1,7 +1,7 @@
 import { Checkbox, CardContent, Card, Typography, CardActions, Button, Grid } from '@mui/material';
 
-export function GoalCard(props) {
-    const { goal, onCardClick, onCompleteGoalChange, onDeleteClick } = props
+export function GoalCardGrid(props) {
+    const { goal, onCardClick, onCompleteGoalChange, onDeleteClick } = props;
 
     return (
         <Card
@@ -9,19 +9,21 @@ export function GoalCard(props) {
             variant="outlined"
             onClick={event => onCardClick(event, goal._id)}>
             <CardContent>
-                <Grid container alignItems='center'>
-                    <Typography variant='h5' noWrap={true} width='80%' sx={{fontWeight: 400}}>
+                <Grid container alignItems='center' justifyContent='space-between'>
+                    <Typography variant='h5' noWrap={true} width='80%' sx={{ fontWeight: 400 }}>
                         {goal.name}
                     </Typography>
                     <Checkbox
                         checked={goal.completed}
                         value={goal.completed}
                         onClick={event => event.stopPropagation()}
-                        onChange={event => onCompleteGoalChange(event, goal._id)} />
+                        onChange={event => onCompleteGoalChange(event, goal._id)}
+                    />
                 </Grid>
-                <Typography variant='body2' noWrap={true}>
+                {goal.description && <Typography variant='body2' noWrap={true}>
                     {goal.description}
                 </Typography>
+                }
             </CardContent>
             <CardActions >
                 <Button size='small' onClick={event => onDeleteClick(event, goal._id)}>Delete</Button>

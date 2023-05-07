@@ -13,4 +13,16 @@ router.get('/:userId', authMiddleware, async (req, res) => {
     }
 })
 
+router.patch('/:userId', authMiddleware, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId);
+        user.meta.goalListView = req.body.goalListView;
+        const updatedUser = await user.save();
+        res.json(updatedUser);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+})
+
 module.exports = router;

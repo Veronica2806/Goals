@@ -66,11 +66,11 @@ export function FoldersList(props) { //types
                 </Grid>}
             />
 
-            {foldersList.data ? foldersList.data.map(folder =>
+            {foldersList.data?.length && foldersList.data.map(folder =>
                 <Grid container item alignItems='center' key={folder._id}>
                     <Button onClick={() => onFolderClick(folder)}> {folder.name}</Button>
                     {folder._id && <Button color='error' onClick={() => removeFolder(folder._id)}>X</Button>}
                 </Grid>
-            ) : 'no folders'}
+            )}
         </Grid>)
 }

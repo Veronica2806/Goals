@@ -3,7 +3,7 @@ import {
     Route,
     Navigate
 } from "react-router-dom";
-import GoalsList from "../pages/application/GoalsList";
+import GoalsList from "../pages/application/GoalList/GoalsList";
 import GoalCreate from "../pages/application/GoalCreate/GoalCreate";
 import GoalDetails from "../pages/application/GoalDetails/GoalDetails";
 import Registration from "../pages/auth/registration/Registration";

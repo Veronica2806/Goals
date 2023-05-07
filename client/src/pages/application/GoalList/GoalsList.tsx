@@ -1,12 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import type { MouseEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchNextSteps } from 'store/nextSteps/nextSteps';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Typography, Grid, Button } from '@mui/material';
-import type { Event } from "./types";
+import type { Event } from "../types";
 import query from "tools/query";
-import { GoalCard } from 'components/common';
+import { GoalCardGrid, GoalCardList, ViewSelect } from 'components/common';
+import { fetchUserInfo } from 'store/userInfo/userInfoGet';
 
 function GoalsList() {
     const navigate = useNavigate();
@@ -16,6 +17,10 @@ function GoalsList() {
     const [loading, setLoading] = useState(true);
     const userId = localStorage.getItem('userId');
     const { folderId } = useParams<string>();
+    const { userInfo }: any = useSelector(state => state);
+    const userView = userInfo.data?.meta?.goalListView || "grid";
+    const isGrid = userView === "grid";
+    const GoalComponent = isGrid ? GoalCardGrid : GoalCardList;
 
     const getGoals = useCallback(async () => {
         try {
@@ -64,6 +69,11 @@ function GoalsList() {
         navigate(`/goal/${goalId}`)
     }
 
+    async function onChangeViewClick(value) {
+        await query(`user/${userId}`, "patch", { goalListView: value });
+        dispatch(fetchUserInfo(userId));
+    }
+
     if (loading) {
         return (
             <Grid container sx={{ justifyContent: 'center' }}>
@@ -76,13 +86,14 @@ function GoalsList() {
     }
     else return (
         <Grid container sx={{ justifyContent: 'center' }} spacing={6}>
-            <Grid container item sx={{ justifyContent: 'flex-end' }}>
+            <Grid container item sx={{ justifyContent: 'space-between' }}>
+                <ViewSelect value={userView} onChange={onChangeViewClick} />
                 <Button variant="contained" color='primary' onClick={() => navigate('/goal')}>Create new Goal</Button>
             </Grid>
 
-            <Grid container item direction={'row'} sx={{ justifyContent: 'left' }}>
+            <Grid direction={isGrid ? 'row' : 'column'} container item sx={{ justifyContent: 'left' }} >
                 {goals.length ? goals.map((goal) => (
-                    <GoalCard
+                    <GoalComponent
                         key={goal._id}
                         goal={goal}
                         onCardClick={onCardClick}
